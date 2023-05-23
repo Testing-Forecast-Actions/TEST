@@ -9,9 +9,9 @@ on:
       - main
   workflow_dispatch:
 
-  jobs:
-    goodbye:
-      runs-on: ubuntu-latest
+jobs:
+  goodbye:
+    runs-on: ubuntu-latest
       steps:
         - name: goodbye world
           run: echo "Goodbye world"
