@@ -1,18 +1,20 @@
-# name: Hello world workflow
-#
-# on:
-#   push:
-#     branches:
-#       - main
+# workflow name
+name: test workflow
+
+# event type
+on:
+  push:
+    branches: [ main ]
 #   pull_request:
 #     branches:
 #       - main
 #   workflow_dispatch:
 #
-# jobs:
-#   goodbye:
-#     runs-on: ubuntu-latest
-#       steps:
-#         - name: goodbye world
-#           run: echo "Goodbye world"
-#           shell: bash
+
+jobs:
+  goodbye:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Say Goodbye
+        run: echo "Goodbye world"
+        shell: bash
