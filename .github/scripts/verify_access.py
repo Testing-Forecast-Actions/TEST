@@ -1,6 +1,6 @@
 import os
 import json
-
+import sys
 
 def run (jsonInputFile):
     print ("Running check")
@@ -20,6 +20,14 @@ def run (jsonInputFile):
 
 if __name__ == "__main__":
     print ("Testing script")
+
+    if len(sys.argv) <= 1 :
+      print ("Missing input. Abort!")
+      return
+
+    input_data_json = sys.argv[1]
+    print ("Input data: \n {}".format(input_data_json))
+
     runningPath = os.path.dirname(__file__)
 
     jsonInputFile = os.path.join(runningPath, '..', 'assets', 'repo_access_mapping.json')
