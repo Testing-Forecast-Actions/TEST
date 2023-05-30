@@ -15,12 +15,22 @@ jobs:
   goodbye:
     runs-on: ubuntu-latest
     steps:
-      - name: Open Web Client Directory
+      - name: Check Path
         working-directory: .
         run: pwd
+        
+      - name: list folder
+        working-directory: .
+        run: |
+          ls -ls
     
       - name: checkout repo
         uses: actions/checkout@v3 # checkout the repository content
+        
+      - name: list folder again
+        working-directory: .
+        run: |
+          ls -ls
         
       - name: setup python
         uses: actions/setup-python@v4
