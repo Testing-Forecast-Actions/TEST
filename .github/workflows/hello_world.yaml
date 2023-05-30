@@ -22,7 +22,7 @@ jobs:
       - name: list folder
         working-directory: .
         run: |
-          ls -ls
+          ls -la
     
       - name: checkout repo
         uses: actions/checkout@v3 # checkout the repository content
@@ -30,7 +30,7 @@ jobs:
       - name: list folder again
         working-directory: .
         run: |
-          ls -ls
+          ls -la
         
       - name: setup python
         uses: actions/setup-python@v4
