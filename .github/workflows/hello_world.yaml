@@ -37,7 +37,7 @@ jobs:
         run: echo '${{ toJSON(github) }}'
         
       - name: Dump pusher
-        run: echo '${{ github.event.pusher }}'
+        run: echo '${{ toJSON(github.event.pusher) }}'
         
       - name: setup python
         uses: actions/setup-python@v4
