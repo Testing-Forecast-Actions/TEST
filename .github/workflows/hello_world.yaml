@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Verify Access
-        run: python ./github/scripts/verify_access.py
+        run: python .github/scripts/verify_access.py
         shell: sh
         
       - name: Say Goodbye
