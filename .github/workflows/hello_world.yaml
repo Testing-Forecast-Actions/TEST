@@ -15,6 +15,10 @@ jobs:
   goodbye:
     runs-on: ubuntu-latest
     steps:
+      - name: Verify Access
+        run: python ./github/scripts/verify_access.py
+        shell: python
+        
       - name: Say Goodbye
         run: echo "Goodbye world"
         shell: bash
