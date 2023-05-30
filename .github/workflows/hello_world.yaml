@@ -17,8 +17,7 @@ jobs:
     steps:
       - name: Open Web Client Directory
         working-directory: .
-        run: |
-          ls -la
+        run: pwd
     
       - name: checkout repo
         uses: actions/checkout@v3 # checkout the repository content
