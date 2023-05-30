@@ -43,7 +43,7 @@ jobs:
          # pip install -r requirements.txt
         
       - name: Execute Verify Access script
-        run: python TEST/.github/scripts/verify_access.py
+        run: python ./.github/scripts/verify_access.py
 
         
       - name: Say Goodbye
