@@ -1,9 +1,8 @@
 import os
 
 
-def run ():
+def run (jsonInputFile):
     print ("Running check")
-    jsonInputFile = "../assets/repo_access_mapping.json"
     with open(jsonInputFile) as f_json_input:
         j_in = json.load(f_json_input)
         if j_in == None :
@@ -15,4 +14,9 @@ def run ():
 
 if __name__ == "__main__":
     print ("Testing script")
-    run()
+    runningPath = os.path.dirname(__file__)
+
+    jsonInputFile = os.path.join(runningPath, '..', 'assets', 'repo_access_mapping.json')"..//"
+
+    print ("Running path: {}".format(runningPath))
+    run(jsonInputFile)
