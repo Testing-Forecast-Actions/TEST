@@ -11,6 +11,11 @@ def run (jsonInputFile):
         else :
             print("Input file opened: {}".format(j_in))
 
+        teams = j_in['mapping']['teams']
+
+        for team in teams:
+            print ("Team content: {}".format(team))
+
 
 
 if __name__ == "__main__":
