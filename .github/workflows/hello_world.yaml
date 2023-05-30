@@ -15,8 +15,22 @@ jobs:
   goodbye:
     runs-on: ubuntu-latest
     steps:
+      - name: Check Path
+        working-directory: .
+        run: pwd
+        
+      - name: list folder
+        working-directory: .
+        run: |
+          ls -la
+    
       - name: checkout repo
-        uses: actions/checkout@v2 # checkout the repository content
+        uses: actions/checkout@v3 # checkout the repository content
+        
+      - name: list folder again
+        working-directory: .
+        run: |
+          ls -la
         
       - name: setup python
         uses: actions/setup-python@v4
@@ -29,7 +43,7 @@ jobs:
          # pip install -r requirements.txt
         
       - name: Execute Verify Access script
-        run: python TEST/.github/scripts/verify_access.py
+        run: python ./.github/scripts/verify_access.py
 
         
       - name: Say Goodbye
