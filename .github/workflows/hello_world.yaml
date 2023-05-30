@@ -17,7 +17,7 @@ jobs:
     steps:
       - name: Verify Access
         run: python ./github/scripts/verify_access.py
-        shell: python
+        shell: sh
         
       - name: Say Goodbye
         run: echo "Goodbye world"
