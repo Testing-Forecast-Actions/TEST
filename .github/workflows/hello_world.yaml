@@ -36,6 +36,9 @@ jobs:
         id: github_context_step
         run: echo '${{ toJSON(github) }}'
         
+      - name: Dump pusher
+        run: echo '${{ github.event.pusher }}'
+        
       - name: setup python
         uses: actions/setup-python@v4
         with:
