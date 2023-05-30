@@ -32,6 +32,13 @@ jobs:
         run: |
           ls -la
         
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
+        
+      - name: Dump pusher
+        run: echo '${{ toJSON(github.event.pusher) }}'
+        
       - name: setup python
         uses: actions/setup-python@v4
         with:
