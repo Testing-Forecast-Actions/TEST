@@ -23,7 +23,7 @@ if __name__ == "__main__":
 
     if len(sys.argv) <= 1 :
       print ("Missing input. Abort!")
-      return
+      exit(0)
 
     input_data_json = sys.argv[1]
     print ("Input data: \n {}".format(input_data_json))
