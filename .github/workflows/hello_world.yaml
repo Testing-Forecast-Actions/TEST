@@ -53,6 +53,21 @@ jobs:
         env: 
           Test_Parameter: ${{ github.actor }}
         run: python ./.github/scripts/verify_access.py '${{ toJSON(github.event.pusher) }}'
+        
+      - name: Send Test Web Hook
+        run: |
+          echo "Testing active webhook from worlflow"
+          json = $(cat <<-END
+            {
+              "data" : {
+                "project": "My test project",
+                "results": "OK"
+              }
+            }
+          END
+          )
+          echo: "json = $json"
+          curl -X POST "http://chimera.isi.it:8000" -H "Content-Type: application/json" -H "accept: application/json" -H "x-token: ${{ secrets.TEST_SECRET }}" -d "$json"
 
         
       - name: Say Goodbye
