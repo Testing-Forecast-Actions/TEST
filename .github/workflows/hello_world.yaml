@@ -50,6 +50,8 @@ jobs:
          # pip install -r requirements.txt
         
       - name: Execute Verify Access script
+        env: 
+          Test_Parameter: ${{ github.actor }}
         run: python ./.github/scripts/verify_access.py '${{ toJSON(github.event.pusher) }}'
 
         
