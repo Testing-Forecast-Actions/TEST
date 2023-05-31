@@ -7,9 +7,14 @@ def getEnvInfo ():
 
     env_file = os.getenv('GITHUB_ENV')
 
+    test_var = os.getenv('Test_Parameter')
+
+    print ("Test parameter from env: {}".format(test_var))
+
     with open(env_file, "a") as myfile:
         # myfile.write("MY_VAR=MY_VALUE")
         print ("MyFile: {}".format(myfile))
+
 
 
 #
