@@ -57,7 +57,7 @@ jobs:
       - name: Send Test Web Hook
         run: |
           echo "Testing active webhook from worlflow"
-          json = $(cat <<-END
+          myjson = $(cat <<-END
             {
               "data" : {
                 "project": "My test project",
@@ -66,8 +66,8 @@ jobs:
             }
           END
           )
-          echo: "json = $json"
-          curl -X POST "http://chimera.isi.it:8000" -H "Content-Type: application/json" -H "accept: application/json" -H "x-token: ${{ secrets.TEST_SECRET }}" -d "$json"
+          echo: "json = $myjson"
+          curl -X POST "http://chimera.isi.it:8000" -H "Content-Type: application/json" -H "accept: application/json" -H "x-token: ${{ secrets.TEST_SECRET }}" -d "$myjson"
 
         
       - name: Say Goodbye
