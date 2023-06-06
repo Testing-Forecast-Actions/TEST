@@ -54,6 +54,9 @@ jobs:
           Test_Parameter: ${{ github.actor }}
         run: python ./.github/scripts/verify_access.py '${{ toJSON(github.event.pusher) }}'
         
+      - name: Read Results form Verify
+        run: echo 'Test res $MY_VAR'
+        
       - name: Send Test Web Hook  
         run: |
           echo "Testing active webhook from worlflow"
