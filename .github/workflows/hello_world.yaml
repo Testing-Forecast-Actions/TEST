@@ -52,7 +52,9 @@ jobs:
       - name: Execute Verify Access script
         env: 
           Test_Parameter: ${{ github.actor }}
-        run: python ./.github/scripts/verify_access.py '${{ toJSON(github.event.pusher) }}'
+        run: |
+          echo "sender: ${{ github.event.sender }}, \n pusher: ${{ github.event.pusher }} \n Repo: ${{ github.event.repository }}"
+          python ./.github/scripts/verify_access.py '${{ toJSON(github.event.pusher) }}'
         
       - name: Read Results form Verify
         run: echo ${{ env.MY_VAR }}
