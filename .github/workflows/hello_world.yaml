@@ -53,7 +53,7 @@ jobs:
         env: 
           Test_Parameter: ${{ github.actor }}
         run: |
-          echo "sender: ${{ github.event.sender }}, \n pusher: ${{ github.event.pusher }} \n Repo: ${{ github.event.repository }}"
+          echo "sender: ${{ toJSON(github.event.sender) }}, \n pusher: ${{ toJSON(github.event.pusher) }} \n Repo: ${{ toJSON(github.event.repository) }}"
           python ./.github/scripts/verify_access.py '${{ toJSON(github.event.pusher) }}'
         
       - name: Read Results form Verify
