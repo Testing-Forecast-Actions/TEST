@@ -55,7 +55,7 @@ jobs:
         run: python ./.github/scripts/verify_access.py '${{ toJSON(github.event.pusher) }}'
         
       - name: Read Results form Verify
-        run: echo 'Test res $MY_VAR'
+        run: echo ${{ env.MY_VAR }}
         
       - name: Send Test Web Hook  
         run: |
