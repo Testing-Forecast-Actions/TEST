@@ -12,7 +12,7 @@ def getEnvInfo ():
     print ("Test parameter from env: {}".format(test_var))
 
     with open(env_file, "a") as myfile:
-        # myfile.write("MY_VAR=MY_VALUE")
+        myfile.write("MY_VAR=MY_FLUCAST_VALUE")
         print ("MyFile: {}".format(myfile))
 
 
