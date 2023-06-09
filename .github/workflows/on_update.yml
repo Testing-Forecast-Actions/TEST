@@ -38,7 +38,8 @@ jobs:
       - name: get user info 
         id: users
         env:
-          MyUserName: ${{ github.event.sender }}
+          MyUserName: 'Pippo'
+#           MyUserName: ${{ github.event.sender }}
         run: echo '$MyUserName'
         
       
