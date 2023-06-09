@@ -37,10 +37,7 @@ jobs:
       # First of all, let's get 
       - name: get user info 
         id: users
-        #env:
-         # MyUserName: ${{ github.event.sender }}
-#           MyUserName: ${{ github.event.sender }}
-        run: echo ${{ toJSON(github.event.sender) }}
+        run: echo '${{ toJSON(github.event.sender) }}'
         
       
       - name: get push files details
