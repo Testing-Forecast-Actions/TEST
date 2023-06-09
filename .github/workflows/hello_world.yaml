@@ -39,7 +39,7 @@ jobs:
       - name: Dump pusher and commit info
         run: |
           echo '${{ toJSON(github.event.pusher) }}'
-          echo '${{ toJSON(github.event.commits) }}'
+          echo '${{ toJSON(github.event.head_commit) }}'
         
       - name: setup python
         uses: actions/setup-python@v4
