@@ -36,10 +36,16 @@ jobs:
         id: github_context_step
         run: echo '${{ toJSON(github) }}'
         
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+        with:
+         format: 'json'
+        
       - name: Dump pusher and commit info
         run: |
           echo '${{ toJSON(github.event.pusher) }}'
           echo '${{ toJSON(github.event.head_commit) }}'
+          echo '${{ steps.files.outputs }}'
         
       - name: setup python
         uses: actions/setup-python@v4
