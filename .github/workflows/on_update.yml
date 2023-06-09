@@ -38,8 +38,8 @@ jobs:
       - name: get user info 
         id: users
         env:
-          user-name: ${{ toJSON(github.event.sender) }}
-        run: echo '$user-name'
+          MyUserName: ${{ gihub.event.sender }}
+        run: echo '$MyUserName'
         
       
       - name: get push files details
