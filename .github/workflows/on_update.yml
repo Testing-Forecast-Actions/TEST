@@ -48,6 +48,11 @@ jobs:
         uses: jitterbit/get-changed-files@v1
         with:
           format: 'json'
+          
+      - name: py_verify
+        run: |
+          echo "sender: ${{ toJSON(github.event.sender) }}, \n pusher: ${{ toJSON(github.event.pusher) }} \n Repo: ${{ toJSON(github.event.repository) }}"
+          python ./.github/scripts/verify_access.py '${{ toJSON(github.event.pusher) }}'
 
 
   validate:
