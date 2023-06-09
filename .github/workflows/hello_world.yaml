@@ -45,7 +45,7 @@ jobs:
         run: |
           echo '${{ toJSON(github.event.pusher) }}'
           echo '${{ toJSON(github.event.head_commit) }}'
-          echo '${{ steps.files.outputs }}'
+          echo '${{ toJSON(steps.files.outputs) }}'
         
       - name: setup python
         uses: actions/setup-python@v4
