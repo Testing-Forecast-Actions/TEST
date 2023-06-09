@@ -40,7 +40,7 @@ jobs:
         env:
           MyUserName: 'Pippo'
 #           MyUserName: ${{ github.event.sender }}
-        run: echo '$MyUserName'
+        run: echo $MyUserName
         
       
       - name: get push files details
