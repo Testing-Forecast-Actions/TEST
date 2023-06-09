@@ -40,7 +40,7 @@ jobs:
         #env:
          # MyUserName: ${{ github.event.sender }}
 #           MyUserName: ${{ github.event.sender }}
-        run: echo ${{ github.event.sender }}
+        run: echo ${{ toJSON(github.event.sender) }}
         
       
       - name: get push files details
