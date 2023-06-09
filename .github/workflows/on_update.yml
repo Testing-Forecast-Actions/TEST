@@ -17,7 +17,9 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
-  update:
+  
+  authorise:
+    # Authorise is about matching the user and the changing paths
     runs-on: ubuntu-latest
     
     steps:
@@ -34,12 +36,13 @@ jobs:
           python-version: '3.10' # install the python version needed
   
       # Let's get some more details about this event
-      # First of all, let's get 
+      
+      # About the user 
       - name: get user info 
         id: users
         run: echo '${{ toJSON(github.event.sender) }}'
         
-      
+      # and about changes
       - name: get push files details
         id: files
         uses: jitterbit/get-changed-files@v1
@@ -47,8 +50,9 @@ jobs:
           format: 'json'
 
 
-  # This workflow contains a single job called "build"
-  build:
+  validate:
+    # Once we are done with authorising, we can validate contents
+    
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
