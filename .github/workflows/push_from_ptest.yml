@@ -33,5 +33,5 @@ jobs:
           git fetch --unshallow
           git checkout main
           git pull
-          git merge --no-ff ptest -m "Auto-merge ptest back to main"
+          git merge --no-ff origin/ptest -m "Auto-merge ptest back to main"
           git push
