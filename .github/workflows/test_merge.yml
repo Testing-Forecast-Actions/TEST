@@ -16,10 +16,10 @@ jobs:
       - name: checkout repo
         uses: actions/checkout@v3 # checkout the repository content
 
-      - name: Set git config
-        run: |
-          git config --local user.email "paolo.milano@isi.it"
-          git config --local user.name "M-7th"      
+#      - name: Set git config
+#        run: |
+#          git config --local user.email "paolo.milano@isi.it"
+#          git config --local user.name "M-7th"      
 #          git config --local user.email "action@github.com"
 #          git config --local user.name "GitHub Action"      
 
