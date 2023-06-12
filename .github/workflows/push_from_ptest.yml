@@ -28,6 +28,6 @@ jobs:
           git fetch --unshallow
           git pull
           git switch main
-          git merge ptest
+          git merge origin/ptest
 
  
