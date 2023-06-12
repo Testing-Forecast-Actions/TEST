@@ -3,6 +3,9 @@ name: ptest to main
 
 
 on: 
+  workflow_run:
+    branches: [ main ]
+    
   push:
     branches: [ ptest ]
     
