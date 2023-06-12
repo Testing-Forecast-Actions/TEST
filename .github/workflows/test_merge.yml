@@ -20,7 +20,10 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"      
-      - name: Merge to main
+#          git config --local user.email "paolo.milano@isi.it"
+#          git config --local user.name "M-7th"      
+
+      - name: Merge to main        
         run: |
           git fetch --unshallow
           git checkout main
