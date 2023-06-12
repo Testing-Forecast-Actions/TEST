@@ -20,5 +20,8 @@ jobs:
           git config --local user.name "Github Actions"
       - name: Step 1 merge
         run: |
+          git fetch --unshallow
+#          git checkout main
+          git pull
           git switch main
           git merge ptest
