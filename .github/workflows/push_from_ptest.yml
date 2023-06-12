@@ -5,6 +5,7 @@ name: PushFromPTest
 on: 
   workflow_run:
     workflows: [ TriggeringWF ]
+    types: [completed]
     branches: [ ptest ]
     
 #   push:
