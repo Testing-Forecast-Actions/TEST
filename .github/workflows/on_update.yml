@@ -1,0 +1,77 @@
+# This is a basic workflow to help you get started with Actions
+
+name: On Update
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the "main" branch
+  push:
+    branches: [ "main" ]
+    
+  pull_request:
+    branches: [ "main" ]
+
+  # Allows you to run this workflow manually from the Actions tab [TEST ONLY - TO BE REMOVED ]
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  
+  authorise:
+    # Authorise is about matching the user and the changing paths
+    runs-on: ubuntu-latest
+    
+    steps:
+    
+      # First step is to update locals
+      - name: checkout repo
+        uses: actions/checkout@v3 # checkout the repository content
+        
+        
+      # Then set up python to be used later on
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' # install the python version needed
+  
+      # Let's get some more details about this event
+      
+      # About the user 
+      - name: get user info 
+        id: users
+        run: echo '${{ toJSON(github.event.sender) }}'
+        
+      # and about changes
+      - name: get push files details
+        id: files
+        uses: jitterbit/get-changed-files@v1
+        with:
+          format: 'json'
+          
+      - name: py_verify
+        run: |
+          echo "sender: ${{ toJSON(github.event.sender) }}, \n pusher: ${{ toJSON(github.event.pusher) }} \n Repo: ${{ toJSON(github.event.repository) }}"
+          python ./.github/scripts/verify_access.py '${{ toJSON(github.event.pusher) }}'
+
+
+  validate:
+    # Once we are done with authorising, we can validate contents
+    
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v3
+
+      # Runs a single command using the runners shell
+      - name: Run a one-line script
+        run: echo Hello, world!
+
+      # Runs a set of commands using the runners shell
+      - name: Run a multi-line script
+        run: |
+          echo Add other actions to build,
+          echo test, and deploy your project.

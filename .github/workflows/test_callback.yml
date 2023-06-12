@@ -1,0 +1,10 @@
+name: test workflow on dispatch
+
+on: repository_dispatch
+
+jobs:
+    test:
+        name: Test Job
+        runs-on: ubuntu-latest
+        steps:
+            - run: 'echo "field: ${{ github.event.client_payload.foo }}"'

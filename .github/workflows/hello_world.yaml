@@ -1,18 +1,78 @@
-name: Hello world workflow
+# workflow name
+name: test workflow
 
+# event type
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
-  workflow_dispatch:
+    branches: [ main ]
+#   pull_request:
+#     branches:
+#       - main
+#   workflow_dispatch:
+#
 
 jobs:
   goodbye:
     runs-on: ubuntu-latest
-      steps:
-        - name: goodbye world
-          run: echo "Goodbye world"
-          shell: bash
+    steps:
+      - name: Check Path
+        working-directory: .
+        run: pwd
+        
+      - name: list folder
+        working-directory: .
+        run: |
+          ls -la
+    
+      - name: checkout repo
+        uses: actions/checkout@v3 # checkout the repository content
+        
+      - name: list folder again
+        working-directory: .
+        run: |
+          ls -la
+        
+      - name: Dump GitHub context
+        id: github_context_step
+        run: echo '${{ toJSON(github) }}'
+        
+      - id: files
+        uses: jitterbit/get-changed-files@v1
+        with:
+         format: 'json'
+        
+      - name: Dump pusher and commit info
+        run: |
+          echo '${{ toJSON(github.event.pusher) }}'
+          echo '${{ toJSON(github.event.head_commit) }}'
+          echo '${{ toJSON(steps.files.outputs) }}'
+        
+      - name: setup python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' # install the python version needed
+
+      #- name: install python packages
+       # run: |
+        #  python -m pip install --upgrade pip
+         # pip install -r requirements.txt
+        
+      - name: Execute Verify Access script
+        env: 
+          Test_Parameter: ${{ github.actor }}
+        run: |
+          echo "sender: ${{ toJSON(github.event.sender) }}, \n pusher: ${{ toJSON(github.event.pusher) }} \n Repo: ${{ toJSON(github.event.repository) }}"
+          python ./.github/scripts/verify_access.py '${{ toJSON(github.event.pusher) }}'
+        
+      - name: Read Results form Verify
+        run: echo ${{ env.MY_VAR }}
+        
+      - name: Send Test Web Hook  
+        run: |
+          echo "Testing active webhook from worlflow"
+          curl -X POST "http://chimera.isi.it:8000" -H "Content-Type: application/json" -H "accept: application/json" -H "x-token: ${{ secrets.TEST_SECRET }}" -d ${{ toJSON(github.event.client_payload) }}
+
+        
+      - name: Say Goodbye
+        run: echo "Goodbye world"
+        shell: bash
