@@ -26,9 +26,10 @@ jobs:
       - name: Step merge
         run: |
           git fetch --unshallow
-          git pull
           git switch main
+          git pull
           git merge origin/ptest
+          git commit -m "test"
           git push origin main
 
  
