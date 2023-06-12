@@ -29,5 +29,6 @@ jobs:
           git pull
           git switch main
           git merge origin/ptest
+          git push origin main
 
  
