@@ -1,0 +1,24 @@
+# Test wf
+
+name: Test push permission
+run-name: Push to ptest by @${{ github.actor }}
+on:
+  push:
+    branches:
+      - 'ptest'
+jobs:
+  test_job:
+    name: Test job n.1
+    runs-on: ubuntu-latest
+    permissions: write-all
+    
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set git config
+        run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+      - name: Step 1 merge
+        run: |
+          git checkout main
+          git merge ptest
