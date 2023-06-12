@@ -13,11 +13,15 @@ jobs:
     permissions: write-all
     
     steps:
-      - uses: actions/checkout@v3
+
+      - name: checkout repo
+        uses: actions/checkout@v3
+
       - name: Set git config
         run: |
           git config --local user.email "actions@github.com"
           git config --local user.name "Github Actions"
+
       - name: Step 1 merge
         run: |
           git fetch --unshallow
@@ -25,3 +29,4 @@ jobs:
           git pull
           git switch main
           git merge ptest
+
