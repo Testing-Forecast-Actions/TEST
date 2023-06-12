@@ -1,9 +1,10 @@
 # testing merge on the main branch
-name: ptest to main
+name: ptestToMain
 
 
 on: 
   workflow_run:
+    workflows: [ ptestToMain ]
     branches: [ main ]
     
   push:
