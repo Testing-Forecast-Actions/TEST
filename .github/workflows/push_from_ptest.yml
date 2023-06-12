@@ -24,10 +24,11 @@ jobs:
         run: |
           echo '<<<<<<<<<<<< PushFromPTest triggered >>>>>>>>>>>>>>'
           echo '${{ toJSON(github.ref) }}'
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"      
-#          git config --local user.email "paolo.milano@isi.it"
-#          git config --local user.name "M-7th"      
+          git config --local user.email "paolo.milano@isi.it"
+          git config --local user.name "M-7th"      
+
+#          git config --local user.email "action@github.com"
+#          git config --local user.name "GitHub Action"      
       - name: Merge to main        
         run: |
           git fetch --unshallow
