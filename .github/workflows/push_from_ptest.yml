@@ -7,33 +7,27 @@ on:
     workflows: [ TriggeringWF ]
     types: [completed]
     branches: [ ptest ]
-    
-#   push:
-#     branches: [ ptest ]
-    
-permissions: write-all
+
+
 
 jobs:
-  merge-ptest-to-main:
+  test_job:
+    name: Test job n.1
     runs-on: ubuntu-latest
+    permissions: write-all
     
     steps:
       - name: checkout repo
-        uses: actions/checkout@v3 # checkout the repository content
-
+        uses: actions/checkout@v3
       - name: Set git config
         run: |
-          echo '<<<<<<<<<<<< PushFromPTest triggered >>>>>>>>>>>>>>'
-          echo '${{ toJSON(github.ref) }}'
-          git config --local user.email "paolo.milano@isi.it"
-          git config --local user.name "M-7th"      
-
-#          git config --local user.email "action@github.com"
-#          git config --local user.name "GitHub Action"      
-      - name: Merge to main        
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+      - name: Step merge
         run: |
           git fetch --unshallow
-          git checkout main
           git pull
-          git merge --no-ff origin/ptest -m "Auto-merge ptest back to main"
-          git push
+          git switch main
+          git merge ptest
+
+ 
