@@ -16,8 +16,8 @@ jobs:
 
       - name: Set git config
         run: |
-          git config --local user.email "paolo.milano@isi.it"
-          git config --local user.name "M-7th"
+          git config --global user.email "paolo.milano@isi.it"
+          git config --global user.name "M-7th"
       
       - name: Merge to main
         run: |
