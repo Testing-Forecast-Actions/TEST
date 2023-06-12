@@ -1,0 +1,16 @@
+name: TriggeringWF
+
+on:
+  push:
+    branches: [ ptest ]
+    
+
+jobs:
+  trigger-from-ptest:
+    runs-on: ubuntu-latest
+    
+    steps:
+     - name: trigger-on-main
+       run: |
+         echo 'Triggering from ptest to main'
+         
