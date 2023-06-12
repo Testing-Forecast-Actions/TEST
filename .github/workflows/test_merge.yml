@@ -3,9 +3,9 @@ name: ptestToMain
 
 
 on: 
-  workflow_run:
-    workflows: [ ptestToMain ]
-    branches: [ main ]
+#   workflow_run:
+#     workflows: [ ptestToMain ]
+#     branches: [ main ]
     
   push:
     branches: [ ptest ]
@@ -22,6 +22,7 @@ jobs:
 
       - name: Set git config
         run: |
+          echo '${{ toJSON(github.ref) }}'
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"      
 #          git config --local user.email "paolo.milano@isi.it"
