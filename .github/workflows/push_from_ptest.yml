@@ -1,5 +1,5 @@
 # testing merge on the main branch
-name: ptestToMain
+name: PushFromPTest
 
 
 on: 
