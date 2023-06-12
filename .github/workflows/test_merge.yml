@@ -5,6 +5,8 @@ name: ptest to main
 on: 
   push:
     branches: [ ptest ]
+    
+permissions: read-all|write-all
 
 jobs:
   merge-ptest-to-main:
