@@ -1,1 +1,23 @@
+# testing merge on the main branch
+name: ptest to main
 
+
+on: 
+  push:
+    branches: [ptest]
+
+jobs:
+  merge-ptest-to-main:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v3 # checkout the repository content
+        
+      - name: Merge to main
+        run: |
+          git fetch --unshallow
+          git checkout main
+          git pull
+          git merge --no-ff ptest -m "Auto-merge ptest back to main"
+          git push
