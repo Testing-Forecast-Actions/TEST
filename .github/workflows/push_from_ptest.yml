@@ -3,12 +3,12 @@ name: PushFromPTest
 
 
 on: 
-#   workflow_run:
-#     workflows: [ ptestToMain ]
-#     branches: [ main ]
+  workflow_run:
+    workflows: [ PushFromPTest ]
+    branches: [ main ]
     
-  push:
-    branches: [ ptest ]
+#   push:
+#     branches: [ ptest ]
     
 permissions: write-all
 
