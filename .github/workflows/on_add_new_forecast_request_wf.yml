@@ -11,5 +11,6 @@ jobs:
     steps:
       - name: test request
         run: |
+          echo 'Pull request received'
           echo 'Commit message: ${{ github.event.head_commit.message }}'
   
