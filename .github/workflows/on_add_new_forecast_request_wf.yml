@@ -1,0 +1,15 @@
+# testing merge on the main branch after a pullrequest approval
+name: On add new forecast requests
+
+on: 
+  pull_request:
+    branches: [ main ]
+    
+jobs:
+  authenticate_user:
+    runs-on: ubuntu-latest
+    steps:
+      - name: test request
+        run: |
+          echo 'Commit message: ${{ github.event.head_commit.message }}'
+  
