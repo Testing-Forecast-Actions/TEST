@@ -25,7 +25,7 @@ jobs:
       - name: Approve request
         uses: juliangruber/approve-pull-request-action@v2.0.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.AT_INFLUCAST }}
           number: ${{ steps.authentication-step.outputs.pr-number }}
           
 #       - name: Merge changes
