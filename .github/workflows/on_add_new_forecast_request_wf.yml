@@ -17,7 +17,7 @@ jobs:
           echo 'Pull request received'
           echo 'Commit message: ${{ github.event.head_commit.message }}'          
           echo 'Number: ${{ github.event.pull_request.number }}'
-          echo "pr-number=${{ github.event.pull_request.number }} >> "$GITHUB_OUTPUT"
+          echo "pr-number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
           
           
       - name: Approve request
