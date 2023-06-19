@@ -13,7 +13,7 @@ jobs:
         run: |
           echo 'Pull request received'
           echo 'Commit message: ${{ github.event.head_commit.message }}'
-          echo 'Number: ${{ number }}'
+          echo 'Number: ${{ github.event.pull_request.number }}'
           
 #       - name: Approve request
 #         uses: juliangruber/approve-pull-request-action@v2.0.0
