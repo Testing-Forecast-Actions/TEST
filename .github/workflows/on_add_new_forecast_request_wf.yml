@@ -13,4 +13,22 @@ jobs:
         run: |
           echo 'Pull request received'
           echo 'Commit message: ${{ github.event.head_commit.message }}'
+          echo number
+          
+#       - name: Approve request
+#         uses: juliangruber/approve-pull-request-action@v2.0.0
+#         with:
+#           github-token: ${{ secrets.GITHUB_TOKEN }}
+#           number: 1
+          
+#       - name: Merge changes
+#         # subsequent steps can access the following output:
+#         # commit - The commit sha of this PR merged
+#         uses: juliangruber/merge-pull-request-action@v1
+#         with:
+#           github-token: ${{ secrets.GITHUB_TOKEN }}
+#           number: 1
+#           method: squash # merge rebase
+#           repo: juliangruber/octokit-action
+        
   
