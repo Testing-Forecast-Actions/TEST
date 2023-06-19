@@ -8,18 +8,23 @@ on:
 jobs:
   authenticate_user:
     runs-on: ubuntu-latest
+    env:
+      pr_number: -1
+      
     steps:
       - name: test request
+      # testing pull request number that will be used later on in the process
         run: |
           echo 'Pull request received'
-          echo 'Commit message: ${{ github.event.head_commit.message }}'
+          echo 'Commit message: ${{ github.event.head_commit.message }}'          
           echo 'Number: ${{ github.event.pull_request.number }}'
           
-#       - name: Approve request
-#         uses: juliangruber/approve-pull-request-action@v2.0.0
-#         with:
-#           github-token: ${{ secrets.GITHUB_TOKEN }}
-#           number: 1
+          
+      - name: Approve request
+        uses: juliangruber/approve-pull-request-action@v2.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ pr_number }}
           
 #       - name: Merge changes
 #         # subsequent steps can access the following output:
