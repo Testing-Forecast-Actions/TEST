@@ -16,6 +16,7 @@ jobs:
       # testing pull request number that will be used later on in the process
         run: |
           echo 'Pull request received'
+          echo 'GitHub actor: ${{ github.actor }}'
           echo 'Commit message: ${{ github.event.head_commit.message }}'          
           echo 'Number: ${{ github.event.pull_request.number }}'
           echo "pr-number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
