@@ -8,6 +8,7 @@ on:
 jobs:
   authenticate-user:
     runs-on: ubuntu-latest
+    permissions: write-all
       
     steps:
       - name: test request
