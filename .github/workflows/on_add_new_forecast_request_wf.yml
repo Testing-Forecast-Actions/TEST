@@ -52,7 +52,8 @@ jobs:
         uses: "pascalgn/automerge-action@v0.15.6"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          LOG: "TRACE"
+          MERGE_LABELS: ""
+#           LOG: "TRACE"
 #       - name: Merge changes
 #         # subsequent steps can access the following output:
 #         # commit - The commit sha of this PR merged
