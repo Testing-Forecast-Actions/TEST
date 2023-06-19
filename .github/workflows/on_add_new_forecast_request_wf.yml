@@ -23,17 +23,17 @@ jobs:
           echo "pr-number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
           
           
-      - name: Get push details
-        id: get_details
-        uses: jitterbit/get-changed-files@v1
-        with:
-          format: 'json'
+#       - name: Get push details
+#         id: get_details
+#         uses: jitterbit/get-changed-files@v1
+#         with:
+#           format: 'json'
           
-      - name: Verify changed
-        run: |
-          for changed_file in ${{ steps.get_details.outputs.all }}; do
-            echo "Do something with this ${changed_file}."
-          done
+#       - name: Verify changed
+#         run: |
+#           for changed_file in ${{ steps.get_details.outputs.all }}; do
+#             echo "Do something with this ${changed_file}."
+#           done
           
       - name: Approve request
         uses: juliangruber/approve-pull-request-action@v2.0.0
