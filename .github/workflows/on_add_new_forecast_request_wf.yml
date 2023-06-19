@@ -6,7 +6,7 @@ on:
     branches: [ main ]
     
 jobs:
-  authenticate_user:
+  authenticate-user:
     runs-on: ubuntu-latest
     env:
       pr_number: -1
@@ -18,13 +18,14 @@ jobs:
           echo 'Pull request received'
           echo 'Commit message: ${{ github.event.head_commit.message }}'          
           echo 'Number: ${{ github.event.pull_request.number }}'
+          $pr_number = ${{ github.event.pull_request.number }}
           
           
       - name: Approve request
         uses: juliangruber/approve-pull-request-action@v2.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          number: pr_number
+          number: ${{ env.pr_number }}
           
 #       - name: Merge changes
 #         # subsequent steps can access the following output:
