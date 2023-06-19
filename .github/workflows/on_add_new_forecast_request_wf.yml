@@ -47,19 +47,19 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
   
-#       - id: automerge
-#         name: automerge
-#         uses: "pascalgn/automerge-action@v0.15.6"
-#         env:
-#           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-      - name: Merge changes
-        # subsequent steps can access the following output:
-        # commit - The commit sha of this PR merged
-        uses: juliangruber/merge-pull-request-action@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ steps.authentication-step.outputs.pr-number }}
-          method: squash # merge rebase
-          repo: juliangruber/octokit-action
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.15.6"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+#       - name: Merge changes
+#         # subsequent steps can access the following output:
+#         # commit - The commit sha of this PR merged
+#         uses: juliangruber/merge-pull-request-action@v1
+#         with:
+#           github-token: ${{ secrets.GITHUB_TOKEN }}
+#           number: ${{ steps.authentication-step.outputs.pr-number }}
+#           method: squash # merge rebase
+#           repo: juliangruber/octokit-action
         
   
