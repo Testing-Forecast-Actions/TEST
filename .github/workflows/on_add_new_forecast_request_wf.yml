@@ -54,7 +54,7 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_LABELS: ""
           UPDATE_LABELS: ""
-          LOG: "TRACE"
+          LOG: "DEBUG"
 #       - name: Merge changes
 #         # subsequent steps can access the following output:
 #         # commit - The commit sha of this PR merged
