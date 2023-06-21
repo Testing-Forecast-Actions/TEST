@@ -20,6 +20,7 @@ jobs:
           echo 'GitHub repo: ${{ github.repository }}'
           echo 'Commit message: ${{ github.event.head_commit.message }}'          
           echo 'Number: ${{ github.event.pull_request.number }}'
+          echo 'Details: ${{ toJSON(github.event.pull_request) }}'
           echo "pr-number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
           
           
