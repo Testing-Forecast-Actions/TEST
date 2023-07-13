@@ -1,0 +1,77 @@
+# testing merge on the main branch after a pullrequest approval
+name: On add new forecast requests
+
+on: 
+  pull_request_target:
+    branches: [ main ]
+    
+jobs:
+  authenticate-user:
+    runs-on: ubuntu-latest
+    permissions: write-all
+      
+    steps:
+      - name: test request
+        id: authentication-step
+      # testing pull request number that will be used later on in the process
+        run: |
+          echo 'Pull request received'
+          echo 'GitHub actor: ${{ github.actor }}'
+          echo 'GitHub repo: ${{ github.repository }}'
+          echo 'Commit message: ${{ github.event.head_commit.message }}'          
+          echo 'Number: ${{ github.event.pull_request.number }}'
+          echo 'Details: ${{ toJSON(github.event.pull_request) }}'
+          echo "pr-number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+          
+          
+#       - name: Get push details
+#         id: get_details
+#         uses: jitterbit/get-changed-files@v1
+#         with:
+#           format: 'json'
+          
+#       - name: Verify changed
+#         run: |
+#           for changed_file in ${{ steps.get_details.outputs.all }}; do
+#             echo "Do something with this ${changed_file}."
+#           done
+          
+      - name: Approve request
+        uses: juliangruber/approve-pull-request-action@v2.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ steps.authentication-step.outputs.pr-number }}
+  
+  
+      - name: checkout repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v36
+        
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+  
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.13.1"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: ""
+          UPDATE_LABELS: ""
+          LOG: "DEBUG"
+#       - name: Merge changes
+#         # subsequent steps can access the following output:
+#         # commit - The commit sha of this PR merged
+#         uses: juliangruber/merge-pull-request-action@v1
+#         with:
+#           github-token: ${{ secrets.GITHUB_TOKEN }}
+#           number: ${{ steps.authentication-step.outputs.pr-number }}
+#           method: squash # merge rebase
+#           repo: juliangruber/octokit-action
