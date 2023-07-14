@@ -23,6 +23,7 @@ def getInputFromEnv ():
     repo = os.getenv("gh-repo")
     pr_number = os.getenv("pr-number")
     changes = os.getenv("all-changes")
+    test_p = os.getenv("test-p")
 
     print ("Input info -> \nactor: {0}, \nrepo: {1}, \npr num: {2}, \nchanges: {3}".format(actor, repo, pr_number, changes))
 
