@@ -24,7 +24,7 @@ def getInputFromEnv ():
     pr_number = os.getenv("steps.get-details.outputs.pr-number")
     changes = os.getenv("steps.changed-files.outputs.all_changed_files")
 
-    print ("Input info -> \nactor: {0}, \nrepo: {1}, \npr num: {2}, \nchanges: {3}".format(actor, repo, pr-number, changes))
+    print ("Input info -> \nactor: {0}, \nrepo: {1}, \npr num: {2}, \nchanges: {3}".format(actor, repo, pr_number, changes))
 
 
 #
