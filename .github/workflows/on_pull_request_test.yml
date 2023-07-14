@@ -15,7 +15,7 @@ jobs:
       - name: get pull request details
         id: get-datails
         run: |
-          echo 'Pull request received'
+          echo 'Pull request received gh-actor ${{ github.actor }}, gh-repo ${{ github.repository }} pr-number ${{ github.event.pull_request.number }}'
           echo "gh-actor=${{ github.actor }}" >> "$GITHUB_OUTPUT"
           echo "gh-repo=${{ github.repository }}" >> "$GITHUB_OUTPUT"
           echo "pr-number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
