@@ -47,7 +47,7 @@ jobs:
         env: 
           Test_Parameter: ${{ github.actor }}
         
-        run: python ./.github/scripts/verify_access.py ‘${{toJSON(github.event.pusher)}}'
+        run: python ./.github/scripts/verify_access.py
 
     
           
