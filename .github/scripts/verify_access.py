@@ -51,12 +51,12 @@ def run (jsonInputFile):
 if __name__ == "__main__":
     print ("Testing script")
 
-    if len(sys.argv) <= 1 :
-      print ("Missing input. Abort!")
-      exit(0)
+    # if len(sys.argv) <= 1 :
+    #   print ("Missing input. Abort!")
+    #   exit(0)
 
-    input_data_json = sys.argv[1]
-    print ("Input data: \n {}".format(input_data_json))
+    # input_data_json = sys.argv[1]
+    # print ("Input data: \n {}".format(input_data_json))
 
     runningPath = os.path.dirname(__file__)
 
