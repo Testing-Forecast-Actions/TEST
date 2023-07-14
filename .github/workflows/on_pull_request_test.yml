@@ -52,7 +52,9 @@ jobs:
           pr-number: ${{ steps.get-details.outputs.pr-number }}
           all-changes: ${{ steps.changed-files.outputs.all_changed_files }}
         
-        run: python ./.github/scripts/verify_access.py
+        run: |
+          echo 'gh-actor: ${{ gh-actor }} 
+          python ./.github/scripts/verify_access.py
 
     
           
