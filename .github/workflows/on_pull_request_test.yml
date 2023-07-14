@@ -19,6 +19,7 @@ jobs:
           echo "gh-actor=${{ github.actor }}" >> "$GITHUB_OUTPUT"
           echo "gh-repo=${{ github.repository }}" >> "$GITHUB_OUTPUT"
           echo "pr-number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+          echo "$GITHUB_OUTPUT"
     
     
       # GET CHANGES 
