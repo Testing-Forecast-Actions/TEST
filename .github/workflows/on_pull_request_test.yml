@@ -1,5 +1,5 @@
 # testing merge on the main branch after a pullrequest approval
-name: On add new forecast requests
+name: On Pull request testing
 
 on: 
   pull_request_target:
@@ -11,53 +11,51 @@ jobs:
     permissions: write-all
       
     steps:
-      - name: test request
-        id: authentication-step
-      # testing pull request number that will be used later on in the process
+      # GET DETAILS 
+      - name: get pull request details
+        id: get-datails
         run: |
           echo 'Pull request received'
-          echo 'GitHub actor: ${{ github.actor }}'
-          echo 'GitHub repo: ${{ github.repository }}'
-          echo 'Commit message: ${{ github.event.head_commit.message }}'          
-          echo 'Number: ${{ github.event.pull_request.number }}'
-          echo 'Details: ${{ toJSON(github.event.pull_request) }}'
+          echo "gh-actor=${{ github.actor }}" >> "$GITHUB_OUTPUT"
+          echo "gh-repo=${{ github.repository }}" >> "$GITHUB_OUTPUT"
           echo "pr-number=${{ github.event.pull_request.number }}" >> "$GITHUB_OUTPUT"
+    
+    
+      # GET CHANGES 
+      # ------------
+      # Checkout the repo
+      - name: checkout repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
           
+      # Verify what changed 
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v36
+        
+      # Debug only step
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+
           
-#       - name: Get push details
-#         id: get_details
-#         uses: jitterbit/get-changed-files@v1
-#         with:
-#           format: 'json'
-          
-#       - name: Verify changed
-#         run: |
-#           for changed_file in ${{ steps.get_details.outputs.all }}; do
-#             echo "Do something with this ${changed_file}."
-#           done
+      # Autenthicate with python 
+      - name: Execute Verify Access script
+        env: 
+          Test_Parameter: ${{ github.actor }}
+          run: python ./.github/scripts/verify_access.py ‘${{toJSON(github.event.pusher)}}'
+
+    
           
       - name: Approve request
         uses: juliangruber/approve-pull-request-action@v2.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ steps.authentication-step.outputs.pr-number }}
-  
-  
-      - name: checkout repo
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v36
-        
-      - name: List all changed files
-        run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
-  
+
       - id: automerge
         name: automerge
         uses: "pascalgn/automerge-action@v0.13.1"
