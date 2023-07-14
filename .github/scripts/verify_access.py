@@ -19,10 +19,10 @@ def getEnvInfo ():
 def getInputFromEnv ():
     
     env_file = os.getenv('GITHUB_ENV')
-    actor = os.getenv("steps.get-details.outputs.gh-actor")
-    repo = os.getenv("steps.get-details.outputs.gh-repo")
-    pr_number = os.getenv("steps.get-details.outputs.pr-number")
-    changes = os.getenv("steps.changed-files.outputs.all_changed_files")
+    actor = os.getenv("gh-actor")
+    repo = os.getenv("gh-repo")
+    pr_number = os.getenv("pr-number")
+    changes = os.getenv("all-changes")
 
     print ("Input info -> \nactor: {0}, \nrepo: {1}, \npr num: {2}, \nchanges: {3}".format(actor, repo, pr_number, changes))
 
