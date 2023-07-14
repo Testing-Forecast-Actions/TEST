@@ -15,6 +15,16 @@ def getEnvInfo ():
         myfile.write("MY_VAR=MY_FLUCAST_VALUE")
         print ("MyFile: {}".format(myfile))
 
+#
+def getInputFromEnv ():
+    
+    env_file = os.getenv('GITHUB_ENV')
+    actor = os.getenv("steps.get-details.outputs.gh-actor")
+    repo = os.getenv("steps.get-details.outputs.gh-repo")
+    pr-number = os.getenv("steps.get-details.outputs.pr-number")
+    changes = os.getenv("steps.changed-files.outputs.all_changed_files")
+
+    print ("Input info -> \nactor: {0}, \nrepo: {1}, \npr num: {2}, \nchanges: {3}".format(actor, repo, pr-number, changes))
 
 
 #
@@ -22,7 +32,7 @@ def run (jsonInputFile):
 
     print ("Running check")
 
-    getEnvInfo()
+    getInputFromEnv()
 
     with open(jsonInputFile) as f_json_input:
         j_in = json.load(f_json_input)
