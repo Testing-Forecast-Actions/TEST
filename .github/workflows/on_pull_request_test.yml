@@ -47,6 +47,10 @@ jobs:
       - name: Execute Verify Access script
         env: 
           Test_Parameter: ${{ github.actor }}
+          gh-actor: ${{ steps.get-details.outputs.gh-actor }}
+          gh-repo: ${{ steps.get-details.outputs.gh-repo }}
+          pr-number: ${{ steps.get-details.outputs.pr-number }}
+          all-changes: ${{ steps.changed-files.outputs.all_changed_files }}
         
         run: python ./.github/scripts/verify_access.py
 
