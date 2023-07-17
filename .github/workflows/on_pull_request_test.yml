@@ -13,13 +13,19 @@ jobs:
     steps:
       # GET DETAILS 
       - name: get pull request details
-        id: get-datails
-        env: 
-          gh_actor_local: "Pippo"
-        
+        id: get_datails
         run: |  
-          echo "gh_actor=$gh_actor_local" >> $GITHUB_OUTPUT
-    
+          echo "gh_actor='pippo'" >> $GITHUB_OUTPUT
+          echo "random_number=12" >> $GITHUB_OUTPUT
+          
+      - name: verify output test
+        run: |
+          echo "VERIFY START >>>>>>>>>>>>>>>"
+          echo "Random num ${{ steps.get_details.outputs.random_number }}"
+          echo "Actor is ${{ steps.get_details.outputs.gh_actor }}"
+          echo "VERIFY STOP >>>>>>>>>>>>>>>"    
+          
+          
       # GET CHANGES 
       # ------------
       # Checkout the repo
