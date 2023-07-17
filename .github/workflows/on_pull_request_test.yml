@@ -11,8 +11,13 @@ jobs:
     steps:
       - name: Generate 0 or 1
         id: generate_number
-        run:  echo "random_number=$(($RANDOM % 2))" >> $GITHUB_OUTPUT
+        run:  |
+          echo "random_number=$(($RANDOM % 2))" >> $GITHUB_OUTPUT
+          echo "my_var='pippo'" >> $GITHUB_OUTPUT
+        
+        
       - name: Pass or fail
         run: |
           echo ">>>> ${{ steps.generate_number.outputs.random_number }}"
+          echo ">>>> Name is ${{ steps.generate_number.outputs.my_var }}"
           if [[ ${{ steps.generate_number.outputs.random_number }} == 0 ]]; then exit 0; else exit 1; fi
