@@ -14,8 +14,10 @@ jobs:
       # GET DETAILS 
       - name: get pull request details
         id: get-datails
-        run: |
-          gh_actor_local = "Pippo"
+        env: 
+          gh_actor_local: "Pippo"
+        
+        run: |  
           echo "gh_actor=$gh_actor_local" >> $GITHUB_OUTPUT
     
       # GET CHANGES 
