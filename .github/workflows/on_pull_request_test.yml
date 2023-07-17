@@ -53,6 +53,7 @@ jobs:
           all-changes: ${{ steps.changed-files.outputs.all_changed_files }}
         
         run: |
+          echo "${{ steps.get-details.outputs.gh-actor }}" 
           python ./.github/scripts/verify_access.py
 
     
