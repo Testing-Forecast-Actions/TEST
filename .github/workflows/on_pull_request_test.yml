@@ -15,11 +15,8 @@ jobs:
       - name: get pull request details
         id: get-datails
         run: |
-          echo 'Pull request received gh_actor ${{ github.actor }}, gh_repo ${{ github.repository }} pr_number ${{ github.event.pull_request.number }}'
-          echo "gh_actor=${{ github.actor }}" >> $GITHUB_OUTPUT
-          echo "gh_repo=${{ github.repository }}" >> $GITHUB_OUTPUT
-          echo "pr_number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
-    
+          gh_actor_local = "Pippo"
+          echo "gh_actor=$gh_actor_local" >> $GITHUB_OUTPUT
     
       # GET CHANGES 
       # ------------
@@ -54,7 +51,7 @@ jobs:
         uses: juliangruber/approve-pull-request-action@v2.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ steps.get-details.outputs.pr_number }}
+          number: ${{ steps.get-datails.outputs.pr_number }}
 
       - id: automerge
         name: automerge
