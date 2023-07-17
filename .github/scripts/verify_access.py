@@ -27,7 +27,9 @@ def getInputFromEnv ():
     # changes = os.getenv("all-changes")
     # test_p = os.getenv("test-p")
     with open (env_file, 'r') as gh_env_file:
+        print ("Env content read START>>>>>>>>>> )
         print (gh_env_file.read())
+        print ("Env content read STOP >>>>>>>>>> )
 
     # print ("Input info -> \nactor: {0}, \nrepo: {1}, \npr num: {2}, \nchanges: {3}".format(actor, repo, pr_number, changes))
 
