@@ -50,7 +50,7 @@ jobs:
       # Autenthicate with python 
       - name: Execute Verify Access script
         run: |
-          echo "${{ steps.get-details.outputs.gh_actor }}" 
+          echo "${{ steps.get_datails.outputs.gh_actor }}" 
           python ./.github/scripts/verify_access.py
 
     
