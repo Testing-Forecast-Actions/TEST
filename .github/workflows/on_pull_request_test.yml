@@ -1,80 +1,18 @@
-# testing merge on the main branch after a pullrequest approval
-name: On Pull request testing
-
+# new test
+name: Testing vars
 on: 
   pull_request_target:
     branches: [ main ]
     
 jobs:
-  authenticate-user:
+  test_job:
     runs-on: ubuntu-latest
-    permissions: write-all
-      
-    steps:
-      # GET DETAILS 
-      - name: get pull request details
-        id: get_datails
-        run: |  
-          echo "gh_actor='pippo'" >> $GITHUB_OUTPUT
-          echo "random_number=12" >> $GITHUB_OUTPUT
-          
-      - name: verify output test
-        run: |
-          echo "VERIFY START >>>>>>>>>>>>>>>"
-          echo "Random num ${{ steps.get_details.outputs.random_number }}"
-          echo "Actor is ${{ steps.get_details.outputs.gh_actor }}"
-          echo "VERIFY STOP >>>>>>>>>>>>>>>"    
-          
-          
-      # GET CHANGES 
-      # ------------
-      # Checkout the repo
-      - name: checkout repo
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          
-      # Verify what changed 
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v36
-        
-      # Debug only step
-      - name: List all changed files
-        run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
-
-          
-      # Autenthicate with python 
-      - name: Execute Verify Access script
-        run: |
-          echo "${{ steps.get_datails.outputs.gh_actor }}" 
-          python ./.github/scripts/verify_access.py
-
     
-          
-      - name: Approve request
-        uses: juliangruber/approve-pull-request-action@v2.0.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ steps.get-datails.outputs.pr_number }}
-
-      - id: automerge
-        name: automerge
-        uses: "pascalgn/automerge-action@v0.13.1"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          MERGE_LABELS: ""
-          UPDATE_LABELS: ""
-          LOG: "DEBUG"
-#       - name: Merge changes
-#         # subsequent steps can access the following output:
-#         # commit - The commit sha of this PR merged
-#         uses: juliangruber/merge-pull-request-action@v1
-#         with:
-#           github-token: ${{ secrets.GITHUB_TOKEN }}
-#           number: ${{ steps.authentication-step.outputs.pr-number }}
-#           method: squash # merge rebase
-#           repo: juliangruber/octokit-action
+    steps:
+      - name: Generate 0 or 1
+        id: generate_number
+        run:  echo "random_number=$(($RANDOM % 2))" >> $GITHUB_OUTPUT
+      - name: Pass or fail
+        run: |
+          echo ">>>> ${{ steps.generate_number.outputs.random_number }}"
+          if [[ ${{ steps.generate_number.outputs.random_number }} == 0 ]]; then exit 0; else exit 1; fi
