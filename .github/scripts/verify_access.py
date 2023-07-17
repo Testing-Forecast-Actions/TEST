@@ -16,6 +16,23 @@ def getEnvInfo ():
         print ("MyFile: {}".format(myfile))
 
 #
+def getInputFromOutput():
+    env_file = os.getenv('GITHUB_OUTPUT')
+
+    
+    # actor = os.getenv("gh-actor")
+    # repo = os.getenv("gh-repo")
+    # pr_number = os.getenv("pr-number")
+    # changes = os.getenv("all-changes")
+    # test_p = os.getenv("test-p")
+    with open (env_file, 'r') as gh_env_file:
+        print ("OUTPUT content read START>>>>>>>>>> ")
+        print (gh_env_file.read())
+        print ("OUTPUT content read STOP >>>>>>>>>> ")
+    
+
+
+#
 def getInputFromEnv ():
     
     env_file = os.getenv('GITHUB_ENV')
@@ -40,6 +57,7 @@ def run (jsonInputFile):
     print ("Running check")
 
     getInputFromEnv()
+    getInputFromOutput()
 
     with open(jsonInputFile) as f_json_input:
         j_in = json.load(f_json_input)
