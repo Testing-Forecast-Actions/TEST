@@ -22,6 +22,16 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      # Checkout the repo
+      - name: checkout tools repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: 'Testing-Forecast-Actions/Testing-Tools'
+          path: tools
+
+
+
       - name: Collect PR details
         id: collect_details
         run: |
