@@ -1,23 +1,47 @@
-# new test
-name: Testing vars
+# testing merge on the main branch after a pullrequest approval
+name: Merge on Pull request 
 on: 
   pull_request_target:
     branches: [ main ]
     
 jobs:
-  test_job:
+  # Firts authenticate user based on PR details
+  authenticate_user:
     runs-on: ubuntu-latest
     
     steps:
+      # test only steps - to be removed - BEGIN
       - name: Generate 0 or 1
         id: generate_number
         run:  |
           echo "random_number=$(($RANDOM % 2))" >> $GITHUB_OUTPUT
           echo "my_var='pippo'" >> $GITHUB_OUTPUT
-        
-        
+                
       - name: Pass or fail
         run: |
           echo ">>>> ${{ steps.generate_number.outputs.random_number }}"
           echo ">>>> Name is ${{ steps.generate_number.outputs.my_var }}"
           if [[ ${{ steps.generate_number.outputs.random_number }} == 0 ]]; then exit 0; else exit 1; fi
+      # test only steps - to be removed - END
+
+      - name: Collect PR details
+        id: collect_details
+        run: |
+          echo "gh_actor=${{ github.actor }}" >> $GITHUB_OUTPUT
+          
+      - name: Get changes
+        id: get_changed_files
+        uses: tj-actions/changed-files@v36
+        
+        # Debug only step
+      - name: List all changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
+          
+      - name: list all the data
+        id: list_input
+        run: |
+          echo ">>>> Actor is ${{ steps.collect_details.outputs.gh_actor }}"
+        
