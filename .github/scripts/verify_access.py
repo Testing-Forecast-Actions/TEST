@@ -12,6 +12,7 @@ def getInputFromOutput():
 
     print ("### LOCAL VAR: {}".format(local_var))
     print ("### Actor: {}".format(actor_from_steps))
+    print ("### Changed List: {}".format(changed_list))
     
     with open (env_file, 'r') as gh_env_file:
         print ("### OUTPUT content read START>>>>>>>>>> ")
