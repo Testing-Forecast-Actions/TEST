@@ -33,8 +33,7 @@ jobs:
             echo "$file was changed"
           done
           
-      - name: list all the data
-        id: list_input
+      - name: Execute Verify Access script
         run: |
           echo ">>>> Actor is ${{ steps.collect_details.outputs.gh_actor }}"
-        
+          python ./.github/scripts/verify_access.py
