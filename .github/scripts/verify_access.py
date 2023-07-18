@@ -7,7 +7,7 @@ def getInputFromOutput():
     env_file = os.getenv('GITHUB_OUTPUT')
 
     local_var = os.getenv("local_test_var")
-    actor_from_steps = os.getenv("steps.collect_details.outputs.gh_actor")
+    actor_from_steps = os.getenv("calling_actor")
 
     print ("### LOCAL VAR: {}".format(local_var))
     print ("### Actor: {}".format(actor_from_steps))
