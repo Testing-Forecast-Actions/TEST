@@ -8,6 +8,7 @@ def getInputFromOutput():
 
     local_var = os.getenv("local_test_var")
     actor_from_steps = os.getenv("calling_actor")
+    changed_list = os.getenv("changed_files")
 
     print ("### LOCAL VAR: {}".format(local_var))
     print ("### Actor: {}".format(actor_from_steps))
