@@ -34,6 +34,10 @@ jobs:
           done
           
       - name: Execute Verify Access script
+        env:
+          local_test_var: "MyLocalValue"
+          
         run: |
           echo ">>>> Actor is ${{ steps.collect_details.outputs.gh_actor }}"
+          echo ">>>> Local var: $local_test_var"
           python ./.github/scripts/verify_access.py
