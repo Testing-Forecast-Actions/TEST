@@ -36,6 +36,7 @@ jobs:
       - name: Execute Verify Access script
         env:
           local_test_var: "MyLocalValue"
+          calling_actor: ${{ steps.collect_details.outputs.gh_actor }}
           
         run: |
           echo ">>>> Actor is ${{ steps.collect_details.outputs.gh_actor }}"
