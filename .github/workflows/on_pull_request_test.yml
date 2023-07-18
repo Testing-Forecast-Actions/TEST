@@ -37,8 +37,6 @@ jobs:
         env:
           local_test_var: "MyLocalValue"
           calling_actor: ${{ steps.collect_details.outputs.gh_actor }}
+          changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
           
-        run: |
-          echo ">>>> Actor is ${{ steps.collect_details.outputs.gh_actor }}"
-          echo ">>>> Local var: $local_test_var"
-          python ./.github/scripts/verify_access.py
+        run: python ./.github/scripts/verify_access.py
