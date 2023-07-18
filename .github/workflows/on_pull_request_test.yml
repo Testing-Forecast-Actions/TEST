@@ -24,6 +24,12 @@ jobs:
           if [[ ${{ steps.generate_number.outputs.random_number }} == 0 ]]; then exit 0; else exit 1; fi
       # test only steps - to be removed - END
 
+      # Checkout the repo
+      - name: checkout repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Collect PR details
         id: collect_details
         run: |
