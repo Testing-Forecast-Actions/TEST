@@ -10,6 +10,11 @@ jobs:
     runs-on: ubuntu-latest
     
     steps:    
+      - name: dump info
+        run: |
+          echo ">>> Repo: ${{ github.repository }}"
+          echo ">>> SrcPath: $GITHUB_WORKSPACE"
+          
 
       # Checkout the repo
       - name: checkout repo
