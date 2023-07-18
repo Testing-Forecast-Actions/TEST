@@ -31,6 +31,8 @@ jobs:
           path: tools
 
 
+      - name: testing tools execution
+        run: ls -all tools
 
       - name: Collect PR details
         id: collect_details
