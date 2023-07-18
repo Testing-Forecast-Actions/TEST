@@ -28,6 +28,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: 'Testing-Forecast-Actions/Testing-Tools'
+          ref: 'main'
           path: tools
 
 
