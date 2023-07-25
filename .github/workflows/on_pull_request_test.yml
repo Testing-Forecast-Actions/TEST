@@ -57,4 +57,4 @@ jobs:
           calling_actor: ${{ steps.collect_details.outputs.gh_actor }}
           changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
           
-        run: python ./tools/.github/scripts/tools_verify.py
+        run: python ./tools/.github/scripts/tools_authenticate.py
