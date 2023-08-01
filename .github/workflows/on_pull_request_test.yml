@@ -66,9 +66,9 @@ jobs:
 
       - name: Execute Validation script
         run: | 
-          if {{}}; 
+          if ${{ steps.authenticate.outputs.authentication == "passed" }}; 
           then
-            .....
+            echo "Valid"
           else
             echo "Not valid"
           fi
