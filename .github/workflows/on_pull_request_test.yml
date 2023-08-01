@@ -63,3 +63,13 @@ jobs:
       - name: Trace execution
         run: |
           echo "authentication result: ${{ steps.authenticate.outputs.authentication }}"
+
+      - name: Execute Validation script
+        run: | 
+          if {{}}; 
+          then
+            .....
+          else
+            echo "Not valid"
+          fi
+        
