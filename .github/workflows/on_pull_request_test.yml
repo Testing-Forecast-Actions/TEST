@@ -70,9 +70,10 @@ jobs:
 
       # If authenticated proceed with validation
       - name: Execute Validation script
+        if: ${{ steps.authenticate.outputs.authentication == 'true' }}        
         env:
           changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
           
         run: python ./tools/.github/scripts/forecast_validation/validate.py
-        if: ${{ steps.authenticate.outputs.authentication == 'true' }}; 
+         
         
