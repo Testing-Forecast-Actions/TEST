@@ -57,9 +57,11 @@ jobs:
       - name: Execute Authentication script
         id: authenticate
         env:
-          local_test_var: "MyLocalValue"
-          calling_actor: ${{ steps.collect_details.outputs.gh_actor }}
+          calling_actor: ${{ github.actor }}
           changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
+          # local_test_var: "MyLocalValue"
+          # calling_actor: ${{ steps.collect_details.outputs.gh_actor }}
+          # changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
           
         run: python ./tools/.github/scripts/request_authentication/authenticate_request.py
         
