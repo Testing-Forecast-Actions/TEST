@@ -14,6 +14,8 @@ jobs:
         run: |
           echo ">>> Repo: ${{ github.repository }}"
           echo ">>> SrcPath: $GITHUB_WORKSPACE"
+          echo ">>> Pull request number: ${{ github.event.pull_request.number }}"
+          echo ">>> Git hub actor: ${{ github.actor }}"
           
 
       # Checkout the forecast repo
@@ -72,10 +74,26 @@ jobs:
 
       # If authenticated proceed with validation
       - name: Execute Validation script
+        id: validate
         if: ${{ steps.authenticate.outputs.authentication == 'true' }}        
         env:
           changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
           
         run: python ./tools/.github/scripts/forecast_validation/validate.py
-         
+
+      # If validation ok - approve pull request 
+      - name: Approve Pull Request
+        if: ${{ steps.validate.outputs.validation == 'true' }}
+        uses: juliangruber/approve-pull-request-action@v2.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ github.event.pull_request.number }}
+
+      - name: Merge Pull Request
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ github.event.pull_request.number }}
+          method: squash # merge rebase
+          repo: juliangruber/octokit-action
         
