@@ -43,6 +43,11 @@ jobs:
         uses: juliangruber/find-pull-request-action@v1
         with:
           branch: main
+          
+      - run: echo "Pull Request ${number} (${sha})"
+        env:
+          number: ${{ steps.find-pull-request.outputs.number }}
+          sha: ${{ steps.find-pull-request.outputs.head-sha }}
 
       - name: Collect PR details
         id: collect_details
@@ -57,8 +62,6 @@ jobs:
         # Debug only step
       - name: List all changed files
         run: |
-          echo "PR NUMBER -> ${{ github.event.pull_request.number }}"
-          echo "PR FOUND -> ${{steps.find-pull-request.outputs.number}}"
           for file in ${{ steps.get_changed_files.outputs.all_changed_files }}; do
             echo "$file was changed"
           done
