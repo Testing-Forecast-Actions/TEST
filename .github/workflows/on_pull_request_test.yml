@@ -119,11 +119,11 @@ jobs:
 
       - name: DEBUG - DUMP INFO
         env:
-          changed-files: ${{ needs.validate_request.outputs.changed_files }}
+          OUTPUT1: ${{ needs.validate_request.outputs.changed_files }}
           
         run: |
           echo ">>> SUCCESS JOB "
-          echo ">>> Changes: $changed-files"
+          echo "$OUTPUT1"
           echo ">>> Repo: ${{ github.repository }}"
           echo ">>> SrcPath: $GITHUB_WORKSPACE"
           echo ">>> Pull request number: ${{ github.event.pull_request.number }}"
