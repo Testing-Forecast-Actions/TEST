@@ -5,9 +5,13 @@ on:
     branches: [ main ]
     
 jobs:
+
   # Firts authenticate user based on PR details
-  authenticate_user:
+  validate_request:
     runs-on: ubuntu-latest
+    outputs: 
+      is_valid: ${{ steps.validate.outputs.validation }}
+      changes:  ${{ steps.get_changed_files.outputs.all_changed_files }}
     
     steps:    
       - name: dump info
@@ -34,7 +38,7 @@ jobs:
           ref: 'main'
           path: tools
 
-
+      # DEBUG only --
       - name: testing tools execution
         run: ls -all tools
 
@@ -86,13 +90,26 @@ jobs:
       # If authenticated proceed with validation
       - name: Execute Validation script
         id: validate
-        if: ${{ steps.authenticate.outputs.authentication == 'true' }}        
+        # if: ${{ steps.authenticate.outputs.authentication == 'true' }}        
         env:
           changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
           
-        run: python ./tools/.github/scripts/forecast_validation/validate.py
+        run: |
+          if [[ ${{ steps.authenticate.outputs.authentication == 'true' }} ]]; then 
+            python ./tools/.github/scripts/forecast_validation/validate.py
+          else 
+            echo "validation=false" >> $GITHUB_OUTPUT
+          fi
 
-      # If validation ok - approve pull request 
+  # SUCCESS
+  success:
+    runs-on: ubuntu-latest
+    needs: validate_request
+    if: ${{ needs.validate_request.outputs.is_valid  == 'true'}}
+
+    steps:
+      
+      # First, approve pull request 
       # - name: Approve Pull Request
       #   if: ${{ steps.validate.outputs.validation == 'true' }}
       #   uses: juliangruber/approve-pull-request-action@v2.0.0
@@ -101,19 +118,43 @@ jobs:
       #     number: ${{ github.event.pull_request.number }}
 
       - name: DEBUG - DUMP INFO
+        env:
+          changed-files: ${{ needs.validate_request.outputs.changes }}
+          
         run: |
-          echo ">>> POST APPROVE "
+          echo ">>> SUCCESS JOB "
+          echo ">>> Changes: $changed-files"
           echo ">>> Repo: ${{ github.repository }}"
           echo ">>> SrcPath: $GITHUB_WORKSPACE"
           echo ">>> Pull request number: ${{ github.event.pull_request.number }}"
           echo ">>> Git hub actor: ${{ github.actor }}"
 
-      - name: Merge Pull Request
-        if: ${{ steps.validate.outputs.validation == 'true' }}
-        uses: juliangruber/merge-pull-request-action@v1
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ github.event.pull_request.number }}
-          method: squash # merge rebase
-          repo: juliangruber/octokit-action
-        
+      # - name: Merge Pull Request
+      #   if: ${{ steps.validate.outputs.validation == 'true' }}
+      #   uses: juliangruber/merge-pull-request-action@v1
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     number: ${{ github.event.pull_request.number }}
+      #     method: squash # merge rebase
+      #     repo: juliangruber/octokit-action
+
+
+  # FAILED
+  failed:
+    runs-on: ubuntu-latest
+    needs: validate_request
+    if: ${{ needs.validate_request.outputs.is_valid  == 'false'}}
+    
+    steps:
+      - name: DEBUG - DUMP INFO
+        env:
+          changed-files: ${{ needs.validate_request.outputs.changes }}
+          
+        run: |
+          echo ">>> FAILED JOB "
+          echo ">>> Changes: $changed-files"
+          echo ">>> Repo: ${{ github.repository }}"
+          echo ">>> SrcPath: $GITHUB_WORKSPACE"
+          echo ">>> Pull request number: ${{ github.event.pull_request.number }}"
+          echo ">>> Git hub actor: ${{ github.actor }}"
+
