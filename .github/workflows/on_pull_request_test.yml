@@ -89,6 +89,14 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ github.event.pull_request.number }}
 
+      - name: DEBUG - DUMP INFO
+        run: |
+          echo ">>> POST APPROVE "
+          echo ">>> Repo: ${{ github.repository }}"
+          echo ">>> SrcPath: $GITHUB_WORKSPACE"
+          echo ">>> Pull request number: ${{ github.event.pull_request.number }}"
+          echo ">>> Git hub actor: ${{ github.actor }}"
+
       - name: Merge Pull Request
         uses: juliangruber/merge-pull-request-action@v1
         with:
