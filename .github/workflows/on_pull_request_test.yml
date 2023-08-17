@@ -82,12 +82,12 @@ jobs:
         run: python ./tools/.github/scripts/forecast_validation/validate.py
 
       # If validation ok - approve pull request 
-      - name: Approve Pull Request
-        if: ${{ steps.validate.outputs.validation == 'true' }}
-        uses: juliangruber/approve-pull-request-action@v2.0.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          number: ${{ github.event.pull_request.number }}
+      # - name: Approve Pull Request
+      #   if: ${{ steps.validate.outputs.validation == 'true' }}
+      #   uses: juliangruber/approve-pull-request-action@v2.0.0
+      #   with:
+      #     github-token: ${{ secrets.GITHUB_TOKEN }}
+      #     number: ${{ github.event.pull_request.number }}
 
       - name: DEBUG - DUMP INFO
         run: |
@@ -98,6 +98,7 @@ jobs:
           echo ">>> Git hub actor: ${{ github.actor }}"
 
       - name: Merge Pull Request
+        if: ${{ steps.validate.outputs.validation == 'true' }}
         uses: juliangruber/merge-pull-request-action@v1
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
