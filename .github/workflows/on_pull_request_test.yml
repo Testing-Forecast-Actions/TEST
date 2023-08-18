@@ -14,6 +14,8 @@ jobs:
       changed_files:  ${{ steps.get_changed_files.outputs.all_changed_files }}
     
     steps:    
+
+      # DEBUG ONLY
       - name: dump info
         run: |
           echo ">>> Repo: ${{ github.repository }}"
@@ -23,13 +25,16 @@ jobs:
           
 
       # Checkout the forecast repo
+      # ---------------------------      
       - name: checkout repo
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      
       # Checkout the python tools repo
       # used to authenticate and validate the PR
+      # -------------------------------------------      
       - name: checkout python tools repo
         uses: actions/checkout@v3
         with:
@@ -38,39 +43,32 @@ jobs:
           ref: 'main'
           path: tools
 
-      # DEBUG only --
-      - name: testing tools execution
-        run: ls -all tools
 
-      - name: Find pull request
-        id: find-pull-request
-        uses: juliangruber/find-pull-request-action@v1
-        with:
-          branch: main
-          
-      - run: echo "Pull Request ${number} (${sha})"
-        env:
-          number: ${{ steps.find-pull-request.outputs.number }}
-          sha: ${{ steps.find-pull-request.outputs.head-sha }}
-
+      # Collect details about the pull request
+      # ----------------------------------------      
       - name: Collect PR details
         id: collect_details
         run: |
           echo "gh_actor=${{ github.actor }}"
           echo "pr_number=${{ github.event.pull_request.number }}" >> $GITHUB_OUTPUT
-          
+
+      # Get changes from pull request 
+      # --------------------------------      
       - name: Get changes
         id: get_changed_files
         uses: tj-actions/changed-files@v36
+
         
-        # Debug only step
+      # DEBUG ONLY
       - name: List all changed files
         run: |
           for file in ${{ steps.get_changed_files.outputs.all_changed_files }}; do
             echo "$file was changed"
           done
+
           
       # Authenticate the pull_request 
+      # -------------------------------      
       - name: Execute Authentication script
         id: authenticate
         env:
@@ -82,15 +80,17 @@ jobs:
           
         run: python ./tools/.github/scripts/request_authentication/authenticate_request.py
         
-      # Debug only step
+
+      # DEBUG ONLY
       - name: Trace execution
         run: |
           echo "authentication result: ${{ steps.authenticate.outputs.authentication }}"
 
+
       # If authenticated proceed with validation
+      # -------------------------------------------      
       - name: Execute Validation script
         id: validate
-        # if: ${{ steps.authenticate.outputs.authentication == 'true' }}        
         env:
           changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
           
@@ -111,27 +111,22 @@ jobs:
 
     steps:
 
-      - uses: actions/checkout@v1
-      # Find the PR associated with this push, if there is one.
-      - uses: jwalton/gh-find-current-pr@v1
-        id: findPr
+      # Checkout the forecast repo
+      # ---------------------------
+      - name: checkout repo
+        uses: actions/checkout@v3
         with:
-          # Can be "open", "closed", or "all".  Defaults to "open".
-          state: open
-      # This will echo "Your PR is 7", or be skipped if there is no current PR.
-      - run: echo "Your PR is ${PR}"
-        if: success() && steps.findPr.outputs.number
-        env:
-          PR: ${{ steps.findPr.outputs.pr }}      
-
+          token: ${{ secrets.GITHUB_TOKEN }}          
           
-      # First, approve pull request 
+      # Approve pull request 
+      # ---------------------------
       - name: Approve Pull Request
         uses: juliangruber/approve-pull-request-action@v2.0.0
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ github.event.pull_request.number }}
 
+      # DEBUG ONLY
       - name: DEBUG - DUMP INFO
         env:
           changes: ${{ needs.validate_request.outputs.changed_files }}
@@ -144,7 +139,8 @@ jobs:
           echo ">>> Pull request number: ${{ github.event.pull_request.number }}"
           echo ">>> Git hub actor: ${{ github.actor }}"
 
-
+      # Merge changes  
+      # ---------------------------      
       - name: Merge Pull Request
         uses: juliangruber/merge-pull-request-action@v1
         with:
@@ -154,6 +150,13 @@ jobs:
           repo: juliangruber/octokit-action
 
 
+      # Activate client view 
+      # ---------------------------
+      # WEBHOOK
+
+
+      
+
   # FAILED
   failed:
     runs-on: ubuntu-latest
@@ -161,6 +164,8 @@ jobs:
     if: ${{ needs.validate_request.outputs.is_valid  == 'false'}}
     
     steps:
+
+      # DEBUG ONLY
       - name: DEBUG - DUMP INFO
         env:
           changed-files: ${{ needs.validate_request.outputs.changes }}
