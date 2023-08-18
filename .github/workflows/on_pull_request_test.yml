@@ -1,8 +1,7 @@
 # testing merge on the main branch after a pullrequest approval
 name: Merge on Pull request 
 on: 
-  # pull_request_target:
-  pull_request:
+  pull_request_target:
     branches: [ main ]
     
 jobs:
@@ -176,7 +175,12 @@ jobs:
       # Activate client view 
       # ---------------------------
       # WEBHOOK
-
+      - name: Invoke deployment hook
+        uses: distributhor/workflow-webhook@v2
+        env:
+          webhook_url: ${{ secrets.WEBHOOK_URL }}
+          webhook_secret: ${{ secrets.WEBHOOK_SECRET }}
+          data: '{ "weapon": "hammer", "drink" : "beer" }'
 
       
 
