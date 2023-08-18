@@ -1,7 +1,8 @@
 # testing merge on the main branch after a pullrequest approval
 name: Merge on Pull request 
 on: 
-  pull_request_target:
+  # pull_request_target:
+  pull_request:
     branches: [ main ]
     
 jobs:
