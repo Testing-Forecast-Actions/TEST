@@ -110,12 +110,12 @@ jobs:
     steps:
       
       # First, approve pull request 
-      # - name: Approve Pull Request
-      #   if: ${{ steps.validate.outputs.validation == 'true' }}
-      #   uses: juliangruber/approve-pull-request-action@v2.0.0
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     number: ${{ github.event.pull_request.number }}
+      - name: Approve Pull Request
+        if: ${{ steps.validate.outputs.validation == 'true' }}
+        uses: juliangruber/approve-pull-request-action@v2.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ github.event.pull_request.number }}
 
       - name: DEBUG - DUMP INFO
         env:
