@@ -180,7 +180,7 @@ jobs:
         env:
           webhook_url: ${{ secrets.WEBHOOK_URL }}
           webhook_secret: ${{ secrets.TEST_SECRET }}
-          data: '{ "weapon": "hammer", "drink" : "beer" }'
+          data: '{ "changes": ${{ needs.validate_request.outputs.changed_files }}, "actor" : ${{ github.actor }} }'
 
       
 
