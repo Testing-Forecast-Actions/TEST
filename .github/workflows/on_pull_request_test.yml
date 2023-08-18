@@ -22,6 +22,7 @@ jobs:
           echo ">>> SrcPath: $GITHUB_WORKSPACE"
           echo ">>> Pull request number: ${{ github.event.pull_request.number }}"
           echo ">>> Git hub actor: ${{ github.actor }}"
+          echo ">>> Branch name is $(echo ${{github.ref}} | sed 's/refs\/heads\///')"
           
 
       # Checkout the forecast repo
