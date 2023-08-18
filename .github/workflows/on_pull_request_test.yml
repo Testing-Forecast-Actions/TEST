@@ -108,6 +108,17 @@ jobs:
     if: ${{ needs.validate_request.outputs.is_valid  == 'true'}}
 
     steps:
+
+      - name: Find Pull Request
+        uses: juliangruber/find-pull-request-action@v1
+        id: find-pull-request
+        with:
+          branch: "main"
+          
+      - run: echo "Pull Request ${number} (${sha})"
+        env:
+          number: ${{ steps.find-pull-request.outputs.number }}
+          sha: ${{ steps.find-pull-request.outputs.head-sha }}
       
       # First, approve pull request 
       - name: Approve Pull Request
@@ -129,22 +140,13 @@ jobs:
           echo ">>> Git hub actor: ${{ github.actor }}"
 
 
-      - uses: actions/checkout@v2
-      - uses: kalgurn/merge-pr-action@1.0.0
+      - name: Merge Pull Request
+        uses: juliangruber/merge-pull-request-action@v1
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          owner: ${{ github.owner }}
-          repo: ${{ github.repository }}
-          pull_number: ${{ github.event.pull_request.number }}
-
-      # - name: Merge Pull Request
-      #   if: ${{ steps.validate.outputs.validation == 'true' }}
-      #   uses: juliangruber/merge-pull-request-action@v1
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     number: ${{ github.event.pull_request.number }}
-      #     method: squash # merge rebase
-      #     repo: juliangruber/octokit-action
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ github.event.pull_request.number }}
+          method: squash # merge rebase
+          repo: juliangruber/octokit-action
 
 
   # FAILED
