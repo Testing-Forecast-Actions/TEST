@@ -133,7 +133,7 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            Hello world ! :wave:
+            All checks completed successfully ! :wave:
           pr_number: ${{ github.event.pull_request.number }}
       
       # DEBUG ONLY
