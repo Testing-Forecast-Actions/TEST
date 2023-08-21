@@ -128,6 +128,14 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           number: ${{ github.event.pull_request.number }}
 
+      # Eventually commento on it
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            Hello world ! :wave:
+          pr_number: ${{ github.event.pull_request.number }}
+      
       # DEBUG ONLY
       - name: DEBUG - DUMP INFO
         env:
