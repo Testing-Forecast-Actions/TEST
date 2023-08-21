@@ -1,4 +1,4 @@
-anno,settimana,luogo,tipo_valore,id_valore,orizzonte,valore
+anni,settimana,luogo,tipo_valore,id_valore,orizzonte,valore
 2017,45,01,quantile,0.01,1,0.9786677558027155
 2017,45,01,quantile,0.99,1,0.986332243955226
 2017,45,01,quantile,0.05,1,0.9729141146128889
