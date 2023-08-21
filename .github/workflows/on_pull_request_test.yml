@@ -160,24 +160,16 @@ jobs:
       #   with:
       #     branch: ${{steps.format-branch.outputs.branch}}
 
-      # - name: Merge upgrade PR
-      #   uses: juliangruber/merge-pull-request-action@v1
-      #   with:
-      #     github-token: ${{secrets.GITHUB_TOKEN}}
-      #     number: ${{steps.find-pull-request.outputs.number}}
-      #     method: merge
-
-
-
       # Merge changes  
       # ---------------------------      
-      # - name: Merge Pull Request
-      #   uses: juliangruber/merge-pull-request-action@v1
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     number: ${{ github.event.pull_request.number }}
-      #     method: squash # merge rebase
-      #     repo: juliangruber/octokit-action      
+      - name: Merge upgrade PR
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          number: ${{github.event.pull_request.number}}
+          method: merge
+          repo: juliangruber/octokit-action
+
 
 
       # Activate client view 
