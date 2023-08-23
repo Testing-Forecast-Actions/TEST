@@ -171,18 +171,15 @@ jobs:
       # Merge changes  
       # ---------------------------    
 
-      - uses: oleksiyrudenko/gha-git-credentials@v2.1.1
+      - uses: de-vri-es/setup-git-credentials@v2
         with:
-          global: true
-          name: 'Paolo Milano'
-          actor: 'M-7th'
-          token: '${{ secrets.AT_INFLUCAST }}'
+          credentials: ${{secrets.AT_INFLUCAST}}
       
       - id: automerge
         name: automerge
         uses: "pascalgn/automerge-action@v0.15.6"
         env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          GITHUB_TOKEN: "${{ secrets.AT_INFLUCAST }}"
           MERGE_LABELS: ""          
           UPDATE_LABELS: ""
           LOG: "DEBUG"  # or "TRACE"
