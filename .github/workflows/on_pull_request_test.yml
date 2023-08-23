@@ -187,6 +187,7 @@ jobs:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_LABELS: ""
           MERGE_METHOD: squash
+          LOG: "DEBUG"  # or "TRACE"
 
       
       # - name: Merge upgrade PR
