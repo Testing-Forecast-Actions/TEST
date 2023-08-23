@@ -23,15 +23,24 @@ jobs:
           echo ">>> Pull request number: ${{ github.event.pull_request.number }}"
           echo ">>> Git hub actor: ${{ github.actor }}"
           echo ">>> Branch name is $(echo ${{github.ref}} | sed 's/refs\/heads\///')"
+          echo ">>> Branch commit is ${{ github.event.pull_request.merge_commit_sha }}"
+          echo ">>> PR_URL is ${{ github.event.pull_request.html_url }}"
           
           
 
       # Checkout the forecast repo
       # ---------------------------      
-      - name: checkout repo
+      # - name: checkout repo
+      #   uses: actions/checkout@v3
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout code
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: "${{ github.event.pull_request.merge_commit_sha }}"
 
       
       # Checkout the python tools repo
@@ -112,13 +121,19 @@ jobs:
     if: ${{ needs.validate_request.outputs.is_valid  == 'true'}}
 
     steps:
-
+      
       # Checkout the forecast repo
       # ---------------------------
-      - name: checkout repo
+      # - name: checkout repo
+      #   uses: actions/checkout@v3
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}          
+
+      - name: Checkout code
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}          
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: "${{ github.event.pull_request.merge_commit_sha }}"
           
       # Approve pull request 
       # ---------------------------
@@ -133,8 +148,9 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            Hello world ! :wave:
+            All checks completed successfully ! :wave:
           pr_number: ${{ github.event.pull_request.number }}
+
       
       # DEBUG ONLY
       - name: DEBUG - DUMP INFO
@@ -150,40 +166,53 @@ jobs:
           echo ">>> Git hub actor: ${{ github.actor }}"
 
 
-      # - name: Format branch
-      #   id: format-branch
-      #   run: echo "::set-output name=branch::$(echo ${{github.ref}} | sed 's/refs\/heads\///')"
+      - name: Format branch
+        id: format-branch
+        run: echo "::set-output name=branch::$(echo ${{github.ref}} | sed 's/refs\/heads\///')"
 
-      # - name: Find pull request
-      #   id: find-pull-request
-      #   uses: juliangruber/find-pull-request-action@v1
-      #   with:
-      #     branch: ${{steps.format-branch.outputs.branch}}
+      - name: Find pull request
+        id: find-pull-request
+        uses: juliangruber/find-pull-request-action@v1
+        with:
+          branch: ${{steps.format-branch.outputs.branch}}
 
+      # LET'S TRY WITH AUTOMERGE
+    
+      # Merge changes  
+      # ---------------------------      
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.15.6"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: ""
+          MERGE_METHOD: squash
+
+      
       # - name: Merge upgrade PR
       #   uses: juliangruber/merge-pull-request-action@v1
       #   with:
       #     github-token: ${{secrets.GITHUB_TOKEN}}
-      #     number: ${{steps.find-pull-request.outputs.number}}
+      #     number: ${{github.event.pull_request.number}}
       #     method: merge
+      #     repo: juliangruber/octokit-action
 
+      # - name: Merge the pull request
+      #   id: merge_pr
+      #   run: |
+      #     gh pr merge --auto --squash "$PR_URL"
+      #     echo "status=true" >> $GITHUB_OUTPUT
+      #   env:
+      #     PR_URL: ${{ github.event.pull_request.html_url }}
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-
-      # Merge changes  
-      # ---------------------------      
-      # - name: Merge Pull Request
-      #   uses: juliangruber/merge-pull-request-action@v1
-      #   with:
-      #     github-token: ${{ secrets.GITHUB_TOKEN }}
-      #     number: ${{ github.event.pull_request.number }}
-      #     method: squash # merge rebase
-      #     repo: juliangruber/octokit-action      
 
 
       # Activate client view 
       # ---------------------------
       # WEBHOOK
       - name: Invoke deployment hook
+        if: ${{ steps.merge_pr.outputs.status == 'true' }}
         uses: distributhor/workflow-webhook@v2
         env:
           webhook_url: ${{ secrets.WEBHOOK_URL }}
