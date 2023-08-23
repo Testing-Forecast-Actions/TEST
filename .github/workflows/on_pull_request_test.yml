@@ -166,20 +166,18 @@ jobs:
           echo ">>> Git hub actor: ${{ github.actor }}"
 
 
-      - name: Format branch
-        id: format-branch
-        run: echo "::set-output name=branch::$(echo ${{github.ref}} | sed 's/refs\/heads\///')"
-
-      - name: Find pull request
-        id: find-pull-request
-        uses: juliangruber/find-pull-request-action@v1
-        with:
-          branch: ${{steps.format-branch.outputs.branch}}
-
       # LET'S TRY WITH AUTOMERGE
     
       # Merge changes  
-      # ---------------------------      
+      # ---------------------------    
+
+      - uses: oleksiyrudenko/gha-git-credentials@v2.1.1
+        with:
+          global: true
+          name: 'Paolo Milano'
+          actor: 'M-7th'
+          token: '${{ secrets.AT_INFLUCAST }}'
+      
       - id: automerge
         name: automerge
         uses: "pascalgn/automerge-action@v0.15.6"
