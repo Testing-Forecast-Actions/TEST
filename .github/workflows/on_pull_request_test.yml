@@ -180,6 +180,13 @@ jobs:
     
       # Merge changes  
       # ---------------------------      
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.15.6"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+
+      
       # - name: Merge upgrade PR
       #   uses: juliangruber/merge-pull-request-action@v1
       #   with:
@@ -188,14 +195,14 @@ jobs:
       #     method: merge
       #     repo: juliangruber/octokit-action
 
-      - name: Merge the pull request
-        id: merge_pr
-        run: |
-          gh pr merge --auto --squash "$PR_URL"
-          echo "status=true" >> $GITHUB_OUTPUT
-        env:
-          PR_URL: ${{ github.event.pull_request.html_url }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      # - name: Merge the pull request
+      #   id: merge_pr
+      #   run: |
+      #     gh pr merge --auto --squash "$PR_URL"
+      #     echo "status=true" >> $GITHUB_OUTPUT
+      #   env:
+      #     PR_URL: ${{ github.event.pull_request.html_url }}
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 
 
