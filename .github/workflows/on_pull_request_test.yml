@@ -24,6 +24,7 @@ jobs:
           echo ">>> Git hub actor: ${{ github.actor }}"
           echo ">>> Branch name is $(echo ${{github.ref}} | sed 's/refs\/heads\///')"
           echo ">>> Branch commit is ${{ github.event.pull_request.merge_commit_sha }}"
+          echo ">>> PR_URL is ${{ github.event.pull_request.html_url }}"
           
           
 
