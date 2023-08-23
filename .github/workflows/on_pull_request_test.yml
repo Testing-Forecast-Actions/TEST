@@ -23,15 +23,23 @@ jobs:
           echo ">>> Pull request number: ${{ github.event.pull_request.number }}"
           echo ">>> Git hub actor: ${{ github.actor }}"
           echo ">>> Branch name is $(echo ${{github.ref}} | sed 's/refs\/heads\///')"
+          echo ">>> Branch commit is ${{ github.event.pull_request.merge_commit_sha }}"
           
           
 
       # Checkout the forecast repo
       # ---------------------------      
-      - name: checkout repo
+      # - name: checkout repo
+      #   uses: actions/checkout@v3
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+
+
+      - name: Checkout code
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          ref: "${{ github.event.pull_request.merge_commit_sha }}"
 
       
       # Checkout the python tools repo
