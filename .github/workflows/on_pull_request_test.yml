@@ -185,8 +185,9 @@ jobs:
         uses: "pascalgn/automerge-action@v0.15.6"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          MERGE_LABELS: ""
-          MERGE_METHOD: squash
+          MERGE_LABELS: ""          
+          UPDATE_LABELS: ""
+          LOG: "DEBUG"  # or "TRACE"
 
       
       # - name: Merge upgrade PR
