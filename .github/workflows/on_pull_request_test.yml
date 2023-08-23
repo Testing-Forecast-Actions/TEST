@@ -164,27 +164,27 @@ jobs:
           echo ">>> Git hub actor: ${{ github.actor }}"
 
 
-      # - name: Format branch
-      #   id: format-branch
-      #   run: echo "::set-output name=branch::$(echo ${{github.ref}} | sed 's/refs\/heads\///')"
+      - name: Format branch
+        id: format-branch
+        run: echo "::set-output name=branch::$(echo ${{github.ref}} | sed 's/refs\/heads\///')"
 
-      # - name: Find pull request
-      #   id: find-pull-request
-      #   uses: juliangruber/find-pull-request-action@v1
-      #   with:
-      #     branch: ${{steps.format-branch.outputs.branch}}
+      - name: Find pull request
+        id: find-pull-request
+        uses: juliangruber/find-pull-request-action@v1
+        with:
+          branch: ${{steps.format-branch.outputs.branch}}
 
       # LET'S TRY WITH AUTOMERGE
     
       # Merge changes  
       # ---------------------------      
-      # - name: Merge upgrade PR
-      #   uses: juliangruber/merge-pull-request-action@v1
-      #   with:
-      #     github-token: ${{secrets.GITHUB_TOKEN}}
-      #     number: ${{github.event.pull_request.number}}
-      #     method: merge
-      #     repo: juliangruber/octokit-action
+      - name: Merge upgrade PR
+        uses: juliangruber/merge-pull-request-action@v1
+        with:
+          github-token: ${{secrets.GITHUB_TOKEN}}
+          number: ${{github.event.pull_request.number}}
+          method: merge
+          repo: juliangruber/octokit-action
 
 
 
