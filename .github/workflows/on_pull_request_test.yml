@@ -132,7 +132,7 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.FluCastToken }}
           ref: "${{ github.event.pull_request.merge_commit_sha }}"
           
       # Approve pull request 
@@ -140,7 +140,7 @@ jobs:
       - name: Approve Pull Request
         uses: juliangruber/approve-pull-request-action@v2.0.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ secrets.FluCastToken }}
           number: ${{ github.event.pull_request.number }}
 
       # Eventually comment on it
