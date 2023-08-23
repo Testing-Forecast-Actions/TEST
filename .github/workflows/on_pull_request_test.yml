@@ -160,15 +160,17 @@ jobs:
       #   with:
       #     branch: ${{steps.format-branch.outputs.branch}}
 
+      # LET'S TRY WITH AUTOMERGE
+    
       # Merge changes  
       # ---------------------------      
-      - name: Merge upgrade PR
-        uses: juliangruber/merge-pull-request-action@v1
-        with:
-          github-token: ${{secrets.GITHUB_TOKEN}}
-          number: ${{github.event.pull_request.number}}
-          method: merge
-          repo: juliangruber/octokit-action
+      # - name: Merge upgrade PR
+      #   uses: juliangruber/merge-pull-request-action@v1
+      #   with:
+      #     github-token: ${{secrets.GITHUB_TOKEN}}
+      #     number: ${{github.event.pull_request.number}}
+      #     method: merge
+      #     repo: juliangruber/octokit-action
 
 
 
