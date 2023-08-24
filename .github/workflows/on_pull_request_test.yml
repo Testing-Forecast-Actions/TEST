@@ -173,7 +173,7 @@ jobs:
 
       - uses: de-vri-es/setup-git-credentials@v2
         with:
-          credentials: ${{secrets.AT_INFLUCAST}}
+          credentials: https://${{ secrets.WF_PR_USER }}:$FluCastToken@github.com
       
       # - id: automerge
       #   name: automerge
@@ -200,7 +200,7 @@ jobs:
           echo "status=true" >> $GITHUB_OUTPUT
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
 
 
 
