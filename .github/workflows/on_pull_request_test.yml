@@ -18,6 +18,7 @@ jobs:
       # DEBUG ONLY
       - name: dump info
         run: |
+          echo ">>> Secret: ${{ secrets.FLUCAST_TOKEN }} "
           echo ">>> Repo: ${{ github.repository }}"
           echo ">>> SrcPath: $GITHUB_WORKSPACE"
           echo ">>> Pull request number: ${{ github.event.pull_request.number }}"
@@ -161,14 +162,14 @@ jobs:
       - name: Merge the pull request
         id: merge_pr
         run: |
-          # export GIT_USER=${{secrets.WF_PR_USER}}
-          # git config --global user.name "$GIT_USER"
-          # git config --global user.email "paolo.milano@isi.it"
+          export GIT_USER=${{secrets.WF_PR_USER}}
+          git config --global user.name "$GIT_USER"
+          git config --global user.email "paolo.milano@isi.it"
           gh pr merge --auto --squash "$PR_URL"
           echo "status=true" >> $GITHUB_OUTPUT
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ secrets.FLUCAST_TOKEN }}
           
 
 
