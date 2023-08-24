@@ -18,7 +18,7 @@ jobs:
       # DEBUG ONLY
       - name: dump info
         run: |
-          echo ">>> Secret: ${{ secrets.FluCastToken }} "
+          echo ">>> Secret: ${{ secrets.FLUCAST_TOKEN }} "
           echo ">>> Repo: ${{ github.repository }}"
           echo ">>> SrcPath: $GITHUB_WORKSPACE"
           echo ">>> Pull request number: ${{ github.event.pull_request.number }}"
