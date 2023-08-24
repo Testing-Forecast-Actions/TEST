@@ -151,41 +151,24 @@ jobs:
             All checks completed successfully ! :wave:
           pr_number: ${{ github.event.pull_request.number }}
 
-      
-      # DEBUG ONLY
-      - name: DEBUG - DUMP INFO
-        env:
-          changes: ${{ needs.validate_request.outputs.changed_files }}
-          
-        run: |
-          echo ">>> SUCCESS JOB "
-          echo "$changes"
-          echo ">>> Repo: ${{ github.repository }}"
-          echo ">>> SrcPath: $GITHUB_WORKSPACE"
-          echo ">>> Pull request number: ${{ github.event.pull_request.number }}"
-          echo ">>> Git hub actor: ${{ github.actor }}"
 
-
-      # LET'S TRY WITH AUTOMERGE
-    
       # Merge changes  
       # ---------------------------    
-
       - uses: de-vri-es/setup-git-credentials@v2
         with:
-          credentials: https://${{ secrets.WF_PR_USER }}:$FluCastToken@github.com
+          credentials: ${{ secrets.WF_PR_CREDENTIALS }}
       
       - name: Merge the pull request
         id: merge_pr
         run: |
-          export GIT_USER=${{secrets.WF_PR_USER}}
-          git config --global user.name "$GIT_USER"
-          git config --global user.email "paolo.milano@isi.it"
+          # export GIT_USER=${{secrets.WF_PR_USER}}
+          # git config --global user.name "$GIT_USER"
+          # git config --global user.email "paolo.milano@isi.it"
           gh pr merge --auto --squash "$PR_URL"
           echo "status=true" >> $GITHUB_OUTPUT
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.FluCastToken }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
 
 
@@ -202,8 +185,9 @@ jobs:
           data: '{ "changes": ${{ toJSON(needs.validate_request.outputs.changed_files) }}, "actor" : ${{ toJSON(github.actor) }} }'
 
       
-
+  # -------------------------------------------
   # FAILED
+  # -------------------------------------------
   failed:
     runs-on: ubuntu-latest
     needs: validate_request
