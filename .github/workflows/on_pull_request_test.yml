@@ -185,7 +185,7 @@ jobs:
           echo "status=true" >> $GITHUB_OUTPUT
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.AT_INFLUCAST }}
+          GH_TOKEN: ${{ secrets.FluCastToken }}
           
 
 
