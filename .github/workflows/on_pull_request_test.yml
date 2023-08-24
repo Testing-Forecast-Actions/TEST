@@ -162,14 +162,16 @@ jobs:
       - name: Merge the pull request
         id: merge_pr
         run: |
+          echo ">>> USER: secrets.WF_PR_USER"
+          echo ">>> PAT: ${{ secrets.WF_PR_PAT }} "
           export GIT_USER=${{secrets.WF_PR_USER}}
-          git config --global user.name "$GIT_USER"
+          git config --global user.name $GIT_USER
           git config --global user.email "paolo.milano@isi.it"
-          gh pr merge --auto --squash "$PR_URL"
+          gh pr merge --auto --squash $PR_URL
           echo "status=true" >> $GITHUB_OUTPUT
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GH_TOKEN: ${{ secrets.FLUCAST_TOKEN }}
+          GH_TOKEN: ${{ secrets.WF_PR_PAT }}
           
 
 
