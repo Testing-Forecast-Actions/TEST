@@ -202,6 +202,7 @@ jobs:
 
         run: |
           echo ">>> Calling custom webhook"
+          pip install requests
           python ./tools/.github/scripts/utils/workflow_webhook.py
 
       
