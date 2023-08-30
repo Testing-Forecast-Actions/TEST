@@ -187,6 +187,7 @@ jobs:
           # webhook_url: ${{ secrets.WEBHOOK_URL }}
           # webhook_url: ${{ secrets.WEB_HOOK_URL_PRODUCTION }}
           webhook_secret: ${{ secrets.TEST_SECRET }}
+          webhook_type: json-extended
           #data: '{ "changes": ${{ toJSON(needs.validate_request.outputs.changed_files) }}, "actor" : ${{ toJSON(github.actor) }} }'
 
       
