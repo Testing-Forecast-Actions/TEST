@@ -135,6 +135,17 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: "${{ github.event.pull_request.merge_commit_sha }}"
+
+      # Checkout the python tools repo
+      # used to authenticate and validate the PR
+      # -------------------------------------------      
+      - name: checkout python tools repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: 'Testing-Forecast-Actions/Testing-Tools'
+          ref: 'main'
+          path: tools
           
       # Approve pull request 
       # ---------------------------
@@ -181,12 +192,19 @@ jobs:
       # WEBHOOK
       - name: Invoke deployment hook
         if: ${{ steps.merge_pr.outputs.status == 'true' }}
-        uses: distributhor/workflow-webhook@v2
+        #uses: distributhor/workflow-webhook@v3.0.5
         env:
+          webhook_url: ${{ secrets.WEB_HOOK_URL_DEV }}
           # webhook_url: ${{ secrets.WEBHOOK_URL }}
-          webhook_url: ${{ secrets.WEB_HOOK_URL_PRODUCTION }}
-          webhook_secret: ${{ secrets.TEST_SECRET }}
+          # webhook_url: ${{ secrets.WEB_HOOK_URL_PRODUCTION }}
+          webhook_secret: ${{ secrets.WEB_HOOK_SECRET }}
           data: '{ "changes": ${{ toJSON(needs.validate_request.outputs.changed_files) }}, "actor" : ${{ toJSON(github.actor) }} }'
+
+        run: |
+          echo ">>> Calling custom webhook"
+          pip install requests
+          echo ">>> Pip installed" 
+          python ./tools/.github/scripts/utils/workflow_webhook.py
 
       
   # -------------------------------------------
