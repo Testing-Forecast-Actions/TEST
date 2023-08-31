@@ -194,7 +194,6 @@ jobs:
         if: ${{ steps.merge_pr.outputs.status == 'true' }}
         #uses: distributhor/workflow-webhook@v3.0.5
         env:
-          # webhook_url: "http://chimera.isi.it:8000"
           webhook_url: ${{ secrets.WEB_HOOK_URL_DEV }}
           # webhook_url: ${{ secrets.WEBHOOK_URL }}
           # webhook_url: ${{ secrets.WEB_HOOK_URL_PRODUCTION }}
