@@ -194,11 +194,11 @@ jobs:
         if: ${{ steps.merge_pr.outputs.status == 'true' }}
         #uses: distributhor/workflow-webhook@v3.0.5
         env:
-          webhook_url: "http://chimera.isi.it:8000"
-          # webhook_url: ${{ secrets.WEB_HOOK_URL_DEV }}
+          # webhook_url: "http://chimera.isi.it:8000"
+          webhook_url: ${{ secrets.WEB_HOOK_URL_DEV }}
           # webhook_url: ${{ secrets.WEBHOOK_URL }}
           # webhook_url: ${{ secrets.WEB_HOOK_URL_PRODUCTION }}
-          webhook_secret: ${{ secrets.TEST_SECRET }}
+          webhook_secret: ${{ secrets.WEB_HOOK_SECRET }}
           data: '{ "changes": ${{ toJSON(needs.validate_request.outputs.changed_files) }}, "actor" : ${{ toJSON(github.actor) }} }'
 
         run: |
