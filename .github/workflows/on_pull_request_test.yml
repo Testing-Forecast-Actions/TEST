@@ -157,7 +157,8 @@ jobs:
     steps:
 
       # DUMP INPUT
-      - run: |
+      - name: Dump for Debug
+        run: |
           echo ">>> SUCCESS - output data: ${{ needs.validate_request.outputs.output_data }}"
       
       # Checkout the forecast repo
