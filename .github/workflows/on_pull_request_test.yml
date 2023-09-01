@@ -139,8 +139,7 @@ jobs:
             else:
               res_data['models'][team_model[1]].append(elem)
 
-
-          echo "::set-output name=output_data::res_data"
+          print(f'::set-output name=output_data::{res_data}')
           
         shell: python  
 
