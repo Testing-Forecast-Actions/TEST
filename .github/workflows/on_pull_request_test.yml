@@ -123,10 +123,8 @@ jobs:
           import os
           res_data = {}
           res_data['models'] = {}
-          changes = ${{ steps.get_changed_files.outputs.all_changed_files }}
-          changes = changes.split(" ")
 
-          for elem in changes:
+          for elem in ${{ steps.get_changed_files.outputs.all_changed_files }}:
             team_model = tuple(os.path.basename(os.path.split(elem)[0]).split('_'))
             
             # add the team. It is only one
