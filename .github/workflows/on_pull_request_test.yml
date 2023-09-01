@@ -127,8 +127,8 @@ jobs:
     steps:
 
       # DUMP INPUT
-      - run: |
-          echo ">>> output data: ${{ needs.validate_request.outputs.output_data }}"
+      # - run: |
+      #     echo ">>> output data: ${{ needs.validate_request.outputs.output_data }}"
       
       # Checkout the forecast repo
       # ---------------------------
