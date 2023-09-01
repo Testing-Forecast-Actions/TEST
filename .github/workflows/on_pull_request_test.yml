@@ -12,7 +12,7 @@ jobs:
     outputs: 
       is_valid: ${{ steps.validate.outputs.validation }}
       changed_files:  ${{ steps.get_changed_files.outputs.all_changed_files }}
-      output_data: ${{ steps.validate.outputs.output_data }}
+      # output_data: ${{ steps.validate.outputs.output_data }}
     
     steps:    
 
