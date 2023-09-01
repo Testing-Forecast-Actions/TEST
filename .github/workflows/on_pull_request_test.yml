@@ -12,6 +12,7 @@ jobs:
     outputs: 
       is_valid: ${{ steps.validate.outputs.validation }}
       changed_files:  ${{ steps.get_changed_files.outputs.all_changed_files }}
+      output_data: ${{ steps.validate.outputs.output_data }}
     
     steps:    
 
@@ -124,6 +125,10 @@ jobs:
     if: ${{ needs.validate_request.outputs.is_valid  == 'true'}}
 
     steps:
+
+      # DUMP INPUT
+      - run: |
+          echo ">>> output data: ${{ needs.validate_request.outputs.output_data }}"
       
       # Checkout the forecast repo
       # ---------------------------
