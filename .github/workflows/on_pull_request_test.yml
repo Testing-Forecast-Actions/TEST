@@ -119,6 +119,7 @@ jobs:
       - name: Prepare Job Output Data
         id: compile_output
         run: |
+          echo ">>> PREPARE OUTPUT"
           import os
           res_data = {}
           res_data['models'] = {}
