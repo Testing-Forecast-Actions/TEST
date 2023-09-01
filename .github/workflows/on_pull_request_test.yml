@@ -236,7 +236,8 @@ jobs:
           # webhook_url: ${{ secrets.WEBHOOK_URL }}
           # webhook_url: ${{ secrets.WEB_HOOK_URL_PRODUCTION }}
           webhook_secret: ${{ secrets.WEB_HOOK_SECRET }}
-          data: '{ "changes": ${{ toJSON(needs.validate_request.outputs.changed_files) }}, "actor" : ${{ toJSON(github.actor) }} }'
+          #data: '{ "changes": ${{ toJSON(needs.validate_request.outputs.changed_files) }}, "actor" : ${{ toJSON(github.actor) }} }'
+          data: ${{ needs.validate_request.outputs.output_data }}
 
         run: |
           echo ">>> Calling custom webhook"
