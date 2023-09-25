@@ -225,25 +225,25 @@ jobs:
 
 
 
-      # Activate client view 
-      # ---------------------------
-      # WEBHOOK
-      - name: Invoke deployment hook
-        if: ${{ steps.merge_pr.outputs.status == 'true' }}
-        #uses: distributhor/workflow-webhook@v3.0.5
-        env:
-          webhook_url: ${{ secrets.WEB_HOOK_URL_DEV }}
-          # webhook_url: ${{ secrets.WEBHOOK_URL }}
-          # webhook_url: ${{ secrets.WEB_HOOK_URL_PRODUCTION }}
-          webhook_secret: ${{ secrets.WEB_HOOK_SECRET }}
-          #data: '{ "changes": ${{ toJSON(needs.validate_request.outputs.changed_files) }}, "actor" : ${{ toJSON(github.actor) }} }'
-          data: ${{ needs.validate_request.outputs.output_data }}
+      # # Activate client view 
+      # # ---------------------------
+      # # WEBHOOK
+      # - name: Invoke deployment hook
+      #   if: ${{ steps.merge_pr.outputs.status == 'true' }}
+      #   #uses: distributhor/workflow-webhook@v3.0.5
+      #   env:
+      #     webhook_url: ${{ secrets.WEB_HOOK_URL_DEV }}
+      #     # webhook_url: ${{ secrets.WEBHOOK_URL }}
+      #     # webhook_url: ${{ secrets.WEB_HOOK_URL_PRODUCTION }}
+      #     webhook_secret: ${{ secrets.WEB_HOOK_SECRET }}
+      #     #data: '{ "changes": ${{ toJSON(needs.validate_request.outputs.changed_files) }}, "actor" : ${{ toJSON(github.actor) }} }'
+      #     data: ${{ needs.validate_request.outputs.output_data }}
 
-        run: |
-          echo ">>> Calling custom webhook"
-          pip install requests
-          echo ">>> Pip installed" 
-          python ./tools/.github/scripts/utils/workflow_webhook.py
+      #   run: |
+      #     echo ">>> Calling custom webhook"
+      #     pip install requests
+      #     echo ">>> Pip installed" 
+      #     python ./tools/.github/scripts/utils/workflow_webhook.py
 
       
   # -------------------------------------------
