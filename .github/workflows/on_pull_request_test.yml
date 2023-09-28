@@ -228,7 +228,7 @@ jobs:
       - name: Store Changes 
         if: ${{ steps.merge_pr.outputs.status == 'true' }}
         env:
-          data: ${{ needs.validate_request.outputs.output_data }}
+          data: ${{ toJSON(needs.validate_request.outputs.output_data) }}
         run: |
           echo ">>> Store changes to json"
           python ./tools/.github/scripts/utils/store_changes.py
