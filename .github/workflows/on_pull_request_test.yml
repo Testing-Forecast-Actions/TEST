@@ -124,6 +124,7 @@ jobs:
         run: |
           print(">>> PREPARE OUTPUT")
           import os
+          import json
           env_file = os.getenv('GITHUB_OUTPUT')    
           to_validate = os.getenv("changed_files")
           changed_files = to_validate.split(" ")
