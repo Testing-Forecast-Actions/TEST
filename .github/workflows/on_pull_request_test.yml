@@ -223,7 +223,15 @@ jobs:
           GH_TOKEN: ${{ secrets.WF_PR_PAT }}
           
 
-
+      # Store changes
+      # -------------------------
+      - name: Store Changes 
+        if: ${{ steps.merge_pr.outputs.status == 'true' }}
+        env:
+          data: ${{ needs.validate_request.outputs.output_data }}
+        run: |
+          echo ">>> Store changes to json"
+          python ./tools/.github/scripts/utils/store_changes.py
 
       # # Activate client view 
       # # ---------------------------
