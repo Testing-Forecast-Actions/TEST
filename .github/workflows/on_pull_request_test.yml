@@ -142,7 +142,8 @@ jobs:
             else:
               res_data['models'][team_model[1]].append(elem)
 
-          print(f'::set-output name=output_data::{res_data}')
+          res_data_s = json.dumps(res_data)
+          print(f'::set-output name=output_data::{res_data_s}')
           
         shell: python  
 
@@ -228,7 +229,7 @@ jobs:
       - name: Store Changes 
         if: ${{ steps.merge_pr.outputs.status == 'true' }}
         env:
-          data: ${{ toJSON(needs.validate_request.outputs.output_data) }}
+          data: ${{ needs.validate_request.outputs.output_data }}
         run: |
           echo ">>> Store changes to json"
           python ./tools/.github/scripts/utils/store_changes.py
