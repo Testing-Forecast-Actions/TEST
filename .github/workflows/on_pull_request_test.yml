@@ -151,7 +151,7 @@ jobs:
   # -------------------------------------------
   # SUCCESS
   # -------------------------------------------
-  success:
+  on_successful_validation:
     runs-on: ubuntu-latest
     needs: validate_request
     if: ${{ needs.validate_request.outputs.is_valid  == 'true'}}
@@ -259,7 +259,7 @@ jobs:
   # -------------------------------------------
   # FAILED
   # -------------------------------------------
-  failed:
+  on_validation_failed:
     runs-on: ubuntu-latest
     needs: validate_request
     if: ${{ needs.validate_request.outputs.is_valid  == 'false'}}
