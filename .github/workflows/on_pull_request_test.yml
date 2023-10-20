@@ -122,29 +122,37 @@ jobs:
           changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
           
         run: |
-          print(">>> PREPARE OUTPUT")
           import os
           import json
           env_file = os.getenv('GITHUB_OUTPUT')    
           to_validate = os.getenv("changed_files")
-          changed_files = to_validate.split(" ")
-          res_data = {}
-          res_data['models'] = {}
+          # Get a list of forecast files
+          fforecasts = to_validate.split(" ")
 
-          for elem in changed_files :
-            team_model = tuple(os.path.basename(os.path.split(elem)[0]).split('_'))
-            
-            # add the team. It is only one
-            if team_model[0] not in res_data:
-              res_data['team'] = team_model[0]
+          # List should not be empty
+          if not fforecasts:
+              raise Exception(f"Empty commit")
+
+          # prepare the output data collection
+          out_data = {}    
+          out_data['team'] = os.path.basename(os.path.split(fforecasts[0])[0]).split('_')[0]
+          out_data['models'] = []
+
+
+          for fforecast in fforecasts :
+
+              #get the model name from path
+              model = tuple(os.path.basename(os.path.split(fforecast)[0]).split('_'))[1]
+
+              model_entry = next((item for item in out_data['models'] if item["model"] == model), None)
+              if model_entry is None:
+                  out_data['models'].append({"model" : model, "changes": [fforecast]})
+              else:
+                  model_entry["changes"].append(fforecast)
               
-            if team_model[1] not in res_data['models'] :
-              res_data['models'][team_model[1]] = [elem]
-            else:
-              res_data['models'][team_model[1]].append(elem)
 
-          res_data_s = json.dumps(res_data)
-          print(f'::set-output name=output_data::{res_data_s}')
+          out_data_s = json.dumps(out_data)
+          print(f'::set-output name=output_data::{out_data_s}')
           
         shell: python  
 
@@ -230,13 +238,13 @@ jobs:
 
       # Store changes 
       # -------------------------
-      # - name: Store Changes 
-      #   if: ${{ steps.merge_pr.outputs.status == 'true' }}
-      #   env:
-      #     data: ${{ needs.validate_request.outputs.output_data }}
-      #   run: |
-      #     echo ">>> Store changes to json"
-      #     python ./tools/.github/scripts/utils/store_changes.py
+      - name: Store Changes 
+        if: ${{ steps.merge_pr.outputs.status == 'true' }}
+        env:
+          data: ${{ needs.validate_request.outputs.output_data }}
+        run: |
+          echo ">>> Store changes to json"
+          python ./tools/.github/scripts/utils/store_changes.py
 
       # # Activate client view 
       # # ---------------------------
