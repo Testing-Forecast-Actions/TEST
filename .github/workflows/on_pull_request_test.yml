@@ -280,7 +280,7 @@ jobs:
       # DEBUG ONLY
       - name: DEBUG - DUMP INFO
         env:
-          changed-files: ${{ needs.validate_request.outputs.changes }}
+          changed-files: ${{ needs.validate_request.outputs.changed_files }}
           
         run: |
           echo ">>> FAILED JOB "
