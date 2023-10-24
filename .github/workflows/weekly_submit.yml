@@ -38,7 +38,7 @@ jobs:
           echo "packageJson=$content" >> "$GITHUB_OUTPUT"
 
       - run: |
-          echo "${{ formJSON(steps.get_changes.outputs.packageJson) }}"
+          echo "${{ fromJSON(steps.get_changes.outputs.packageJson) }}"
 
           
     
