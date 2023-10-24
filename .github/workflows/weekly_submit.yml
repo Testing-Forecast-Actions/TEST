@@ -38,7 +38,7 @@ jobs:
           echo "::set-output name=packageJson::$content"
 
       - run: |
-          echo "${{fromJson(steps.get_changes.outputs.packageJson)}}"
+          echo "${{ steps.get_changes.outputs.packageJson }}"
 
           
     
