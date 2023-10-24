@@ -39,7 +39,7 @@ jobs:
           
 
       - run: |
-          echo "${{ fromJSON(steps.get_changes.outputs.packageJson) }}"
+          echo "${{ steps.get_changes.outputs.packageJson }}"
 
           
     
