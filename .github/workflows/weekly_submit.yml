@@ -31,6 +31,9 @@ jobs:
         id: get_changes
         run: |
           echo "Read changes list from json"
+          content=`cat ./tools/.github/scripts/utils/changes_db.json`
+          
+
           
     
       # Trigger server-side updating and UI deploy
