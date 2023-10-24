@@ -1,1 +1,243 @@
-# code
+# testing merge on the main branch after a pullrequest approval
+name: Validate Submission
+on: 
+  pull_request_target:
+    branches: [ main ]
+    
+jobs:
+
+  # Firts authenticate user based on PR details
+  validate_request:
+    runs-on: ubuntu-latest
+    outputs: 
+      is_valid: ${{ steps.validate.outputs.validation }}
+      changed_files:  ${{ steps.get_changed_files.outputs.all_changed_files }}
+      output_data: ${{ steps.compile_output.outputs.output_data }}
+    
+    steps:    
+
+      # Check out the submission repo
+      # -------------------------------------------      
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          # ref: "${{ github.event.pull_request.merge_commit_sha }}"
+          ref: ${{ github.event.pull_request.head.sha }}
+
+      
+      # Checkout the python tools repo
+      # used to authenticate and validate the PR
+      # -------------------------------------------      
+      - name: checkout python tools repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: 'Testing-Forecast-Actions/Testing-Tools'
+          ref: 'main'
+          path: tools
+
+
+      # Get changes from pull request 
+      # --------------------------------      
+      - name: Get changes
+        id: get_changed_files
+        uses: tj-actions/changed-files@v36
+        
+          
+      # Authenticate the pull_request 
+      # -------------------------------      
+      - name: Execute Authentication script
+        id: authenticate
+        env:
+          calling_actor: ${{ github.actor }}
+          changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
+          
+        run: python ./tools/.github/scripts/request_authentication/authenticate_request.py
+
+        
+      # If authenticated proceed with validation
+      # -------------------------------------------      
+      - name: Execute Validation script
+        id: validate
+        env:
+          changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
+          
+        run: |
+          if [[ ${{ steps.authenticate.outputs.authentication == 'true' }} ]]; then 
+            python ./tools/.github/scripts/forecast_validation/validate.py
+          else 
+            echo "validation=false" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Prepare Job Output Data
+        id: compile_output
+        env:
+          changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
+          
+        run: |
+          import os
+          import json
+          env_file = os.getenv('GITHUB_OUTPUT')    
+          to_validate = os.getenv("changed_files")
+          # Get a list of forecast files
+          fforecasts = to_validate.split(" ")
+
+          # List should not be empty
+          if not fforecasts:
+              raise Exception(f"Empty commit")
+
+          # prepare the output data collection
+          out_data = {}    
+          out_data['team'] = os.path.basename(os.path.split(fforecasts[0])[0]).split('_')[0]
+          out_data['models'] = []
+
+
+          for fforecast in fforecasts :
+
+              #get the model name from path
+              model = tuple(os.path.basename(os.path.split(fforecast)[0]).split('_'))[1]
+
+              model_entry = next((item for item in out_data['models'] if item["model"] == model), None)
+              if model_entry is None:
+                  out_data['models'].append({"model" : model, "changes": [fforecast]})
+              else:
+                  model_entry["changes"].append(fforecast)
+              
+
+          out_data_s = json.dumps(out_data)
+          print(f'::set-output name=output_data::{out_data_s}')
+          
+        shell: python  
+
+  # -------------------------------------------
+  # SUCCESS
+  # -------------------------------------------
+  on_successful_validation:
+    runs-on: ubuntu-latest
+    needs: validate_request
+    if: ${{ needs.validate_request.outputs.is_valid  == 'true'}}
+
+    steps:
+      
+      # Checkout the forecast repo
+      # ---------------------------
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: "${{ github.event.pull_request.merge_commit_sha }}"
+
+      # Checkout the python tools repo
+      # used to authenticate and validate the PR
+      # -------------------------------------------      
+      - name: checkout python tools repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: 'Testing-Forecast-Actions/Testing-Tools'
+          ref: 'main'
+          path: tools
+          
+      # Approve pull request 
+      # ---------------------------
+      - name: Approve Pull Request
+        uses: juliangruber/approve-pull-request-action@v2.0.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          number: ${{ github.event.pull_request.number }}
+
+      # Eventually comment on it
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            All checks completed successfully ! :wave:
+          pr_number: ${{ github.event.pull_request.number }}
+
+      # Merge changes  
+      # ---------------------------    
+      - uses: de-vri-es/setup-git-credentials@v2
+        with:
+          credentials: ${{ secrets.WF_PR_CREDENTIALS }}
+      
+      - name: Merge the pull request
+        id: merge_pr
+        run: |
+          echo ">>> USER: secrets.WF_PR_USER"
+          echo ">>> PAT: ${{ secrets.WF_PR_PAT }} "
+          echo ">>> PR URL: ${{ github.event.pull_request.html_url }}"
+          export GIT_USER=${{secrets.WF_PR_USER}}
+          git config --global user.name $GIT_USER
+          git config --global user.email "paolo.milano@isi.it"
+          gh pr merge --auto --squash $PR_URL
+          echo "status=true" >> $GITHUB_OUTPUT
+        env:
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.WF_PR_PAT }}
+
+
+      #TEMP REMOVE 
+
+      # Store changes 
+      # -------------------------
+      - name: Store Changes 
+        if: ${{ steps.merge_pr.outputs.status == 'true' }}
+        env:
+          data: ${{ needs.validate_request.outputs.output_data }}
+        run: |
+          echo ">>> Store changes to json"
+          python ./tools/.github/scripts/utils/store_changes.py
+
+      # # Activate client view 
+      # # ---------------------------
+      # # WEBHOOK
+      # - name: Invoke deployment hook
+      #   if: ${{ steps.merge_pr.outputs.status == 'true' }}
+      #   #uses: distributhor/workflow-webhook@v3.0.5
+      #   env:
+      #     webhook_url: ${{ secrets.WEB_HOOK_URL_DEV }}
+      #     # webhook_url: ${{ secrets.WEBHOOK_URL }}
+      #     # webhook_url: ${{ secrets.WEB_HOOK_URL_PRODUCTION }}
+      #     webhook_secret: ${{ secrets.WEB_HOOK_SECRET }}
+      #     #data: '{ "changes": ${{ toJSON(needs.validate_request.outputs.changed_files) }}, "actor" : ${{ toJSON(github.actor) }} }'
+      #     data: ${{ needs.validate_request.outputs.output_data }}
+
+      #   run: |
+      #     echo ">>> Calling custom webhook"
+      #     pip install requests
+      #     echo ">>> Pip installed" 
+      #     python ./tools/.github/scripts/utils/workflow_webhook.py
+
+      
+  # -------------------------------------------
+  # FAILED
+  # -------------------------------------------
+  on_validation_failed:
+    runs-on: ubuntu-latest
+    needs: validate_request
+    if: ${{ needs.validate_request.outputs.is_valid  == 'false'}}
+    
+    steps:
+
+      # DEBUG ONLY
+      - name: DEBUG - DUMP INFO
+        env:
+          changed-files: ${{ needs.validate_request.outputs.changed_files }}
+          
+        run: |
+          echo ">>> FAILED JOB "
+          echo ">>> Changes: $changed-files"
+          echo ">>> Repo: ${{ github.repository }}"
+          echo ">>> SrcPath: $GITHUB_WORKSPACE"
+          echo ">>> Pull request number: ${{ github.event.pull_request.number }}"
+          echo ">>> Git hub actor: ${{ github.actor }}"
+
+
+      # Inform the user about what went wrong
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            Something went wrong. PR is rejected
+          pr_number: ${{ github.event.pull_request.number }}
