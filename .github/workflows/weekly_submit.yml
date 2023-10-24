@@ -32,8 +32,10 @@ jobs:
         run: |
           echo "Read changes list from json"
           content=`cat ./tools/.github/scripts/utils/changes_db.json`
-          echo "Json content -> ${{fromJson($content)}}"
-          
+          echo "::set-output name=packageJson::$content"
+
+      - run: |
+          echo "${{fromJson(steps.get_changes.outputs.packageJson).version}}"
 
           
     
