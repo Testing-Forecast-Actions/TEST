@@ -126,7 +126,8 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          ref: "${{ github.event.pull_request.merge_commit_sha }}"
+          ref: "${{ github.event.pull_request.head.sha }}"
+          # ref: "${{ github.event.pull_request.merge_commit_sha }}"
 
       # Checkout the python tools repo
       # used to authenticate and validate the PR
@@ -157,19 +158,9 @@ jobs:
 
       # Merge changes  
       # ---------------------------    
-      - uses: de-vri-es/setup-git-credentials@v2
-        with:
-          credentials: ${{ secrets.WF_PR_CREDENTIALS }}
-      
       - name: Merge the pull request
         id: merge_pr
         run: |
-          echo ">>> USER: secrets.WF_PR_USER"
-          echo ">>> PAT: ${{ secrets.WF_PR_PAT }} "
-          echo ">>> PR URL: ${{ github.event.pull_request.html_url }}"
-          export GIT_USER=${{secrets.WF_PR_USER}}
-          git config --global user.name $GIT_USER
-          git config --global user.email "paolo.milano@isi.it"
           gh pr merge --auto --squash $PR_URL
           echo "status=true" >> $GITHUB_OUTPUT
         env:
