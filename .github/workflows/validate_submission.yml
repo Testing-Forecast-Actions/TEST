@@ -49,6 +49,7 @@ jobs:
         
           
       # Authenticate the pull_request 
+      # returns as output authentication = { True / False }
       # -------------------------------      
       - name: Execute Authentication script
         id: authenticate
@@ -60,6 +61,7 @@ jobs:
 
         
       # If authenticated proceed with validation
+      # returns as output validation = { True / False }
       # -------------------------------------------      
       - name: Execute Validation script
         id: validate
@@ -130,8 +132,7 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: "${{ github.event.pull_request.head.sha }}"
-          # ref: "${{ github.event.pull_request.merge_commit_sha }}"
-
+          
       # Checkout the python tools repo
       # used to authenticate and validate the PR
       # -------------------------------------------      
