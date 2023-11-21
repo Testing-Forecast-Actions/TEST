@@ -2,8 +2,9 @@
 name: On add new forecast requests
 
 on: 
-  pull_request_target:
-    branches: [ main ]
+  workflow_dispatch:
+  # pull_request_target:
+  #   branches: [ main ]
     
 jobs:
   authenticate-user:
