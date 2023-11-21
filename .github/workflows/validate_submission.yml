@@ -3,6 +3,10 @@ name: Validate Submission
 on: 
   pull_request_target:
     branches: [ main ]
+    paths:
+      - 'previsioni/**'
+      - '!**README**'
+      
     
 jobs:
 
@@ -11,9 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     outputs: 
       is_valid: ${{ steps.validate.outputs.validation }}
-      changed_files:  ${{ steps.get_changed_files.outputs.all_changed_files }}
       output_data: ${{ steps.compile_output.outputs.output_data }}
-    
+      changed_files:  ${{ steps.get_changed_files.outputs.all_changed_files }}
+      
     steps:    
 
       # Check out the submission repo
@@ -22,7 +26,6 @@ jobs:
         uses: actions/checkout@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          # ref: "${{ github.event.pull_request.merge_commit_sha }}"
           ref: ${{ github.event.pull_request.head.sha }}
 
       
@@ -35,7 +38,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           repository: 'Testing-Forecast-Actions/Testing-Tools'
           ref: 'main'
-          path: tools
+          path: './tools'
 
 
       # Get changes from pull request 
