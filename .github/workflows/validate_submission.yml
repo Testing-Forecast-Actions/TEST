@@ -76,6 +76,21 @@ jobs:
             echo "validate='failure'" >> $GITHUB_OUTPUT
           fi
 
+
+      - name: Trace for Debug
+        env:
+          is_valid: ${{ steps.validate.outputs.validate == 'success' && steps.authenticate.outputs.authenticate == 'success' }}
+        run: |
+          echo " Auth: ${{ steps.authenticate.outputs.authenticate }}"
+          echo " Val: ${{ steps.validate.outputs.validate }}"
+          if (( $is_valid )); then 
+            echo "is valid"
+          else
+            echo "is not valid" 
+          fi
+
+          
+
       - name: Prepare Job Output Data
         id: compile_output
         env:
