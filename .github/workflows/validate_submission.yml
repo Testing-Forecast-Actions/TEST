@@ -68,14 +68,7 @@ jobs:
         env:
           changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
           
-        run: |
-          echo "Authenticate result: ${{ steps.authenticate.outputs.authenticate }}"
-          if (( ${{ steps.authenticate.outputs.authenticate == 'success' }} )); then 
-            python ./tools/.github/scripts/forecast_validation/validate.py
-          else 
-            echo "validate='failure'" >> $GITHUB_OUTPUT
-          fi
-
+        run: python ./tools/.github/scripts/forecast_validation/validate.py
 
       - name: Trace for Debug
         env:
