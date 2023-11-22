@@ -69,7 +69,7 @@ jobs:
           changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
           
         run: |
-          echo "Authenticate result: ${{ steps.authenticate.outputs.authenticate }}
+          echo "Authenticate result: ${{ steps.authenticate.outputs.authenticate }}"
           if [[ ${{ steps.authenticate.outputs.authenticate == 'success' }} ]]; then 
             python ./tools/.github/scripts/forecast_validation/validate.py
           else 
