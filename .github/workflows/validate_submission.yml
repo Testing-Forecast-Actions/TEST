@@ -70,7 +70,7 @@ jobs:
           
         run: |
           echo "Authenticate result: ${{ steps.authenticate.outputs.authenticate }}"
-          if [[ ${{ steps.authenticate.outputs.authenticate == 'success' }} ]]; then 
+          if (( ${{ steps.authenticate.outputs.authenticate == 'success' }} )); then 
             python ./tools/.github/scripts/forecast_validation/validate.py
           else 
             echo "validate='failure'" >> $GITHUB_OUTPUT
