@@ -76,11 +76,7 @@ jobs:
         run: |
           echo " Auth: ${{ steps.authenticate.outputs.authenticate }}"
           echo " Val: ${{ steps.validate.outputs.validate }}"
-          if (( $is_valid )); then 
-            echo "is valid"
-          else
-            echo "is not valid" 
-          fi
+          echo " IsVal: $is_valid" 
 
           
 
