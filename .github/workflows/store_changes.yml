@@ -50,7 +50,8 @@ jobs:
     - name: checkout data repo
       uses: actions/checkout@v3
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        # token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.WF_PR_PAT }}
         repository: 'Testing-Forecast-Actions/TEST'
         ref: 'main'
         path: './repo/'
