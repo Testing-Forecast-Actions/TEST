@@ -1,1 +1,10 @@
-{}
+{
+    "ISI": [
+        {
+            "model": "AutoArima",
+            "changes": [
+                "previsioni/ISI_AutoArima/2017_51.csv"
+            ]
+        }
+    ]
+}
