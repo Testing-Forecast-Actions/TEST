@@ -14,9 +14,12 @@ jobs:
   validate_request:
     runs-on: ubuntu-latest
     outputs: 
-      is_valid: ${{ steps.validate.outputs.validate == 'success' && steps.authenticate.outputs.authenticate == 'success' }}
-      output_data: ${{ steps.compile_output.outputs.output_data }}
+      # output_data: ${{ steps.compile_output.outputs.output_data }}
+      validate_error_msg: ${{ steps.validate.outputs.message }}
+      authenticate_error_msg: ${{ steps.authenticate.outputs.message }}
       changed_files:  ${{ steps.get_changed_files.outputs.all_changed_files }}
+      is_valid: ${{ steps.validate.outputs.validate == 'success' && steps.authenticate.outputs.authenticate == 'success' }}
+      
       
     steps:    
 
@@ -80,45 +83,45 @@ jobs:
 
           
 
-      - name: Prepare Job Output Data
-        id: compile_output
-        env:
-          changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
-        if: ${{ steps.validate.outputs.validate == 'success' && steps.authenticate.outputs.authenticate == 'success' }}
-        run: |
-          import os
-          import json
-          env_file = os.getenv('GITHUB_OUTPUT')    
-          to_validate = os.getenv("changed_files")
-          # Get a list of forecast files
-          fforecasts = to_validate.split(" ")
+      # - name: Prepare Job Output Data
+      #   id: compile_output
+      #   env:
+      #     changed_files: ${{ steps.get_changed_files.outputs.all_changed_files }}
+      #   if: ${{ steps.validate.outputs.validate == 'success' && steps.authenticate.outputs.authenticate == 'success' }}
+      #   run: |
+      #     import os
+      #     import json
+      #     env_file = os.getenv('GITHUB_OUTPUT')    
+      #     to_validate = os.getenv("changed_files")
+      #     # Get a list of forecast files
+      #     fforecasts = to_validate.split(" ")
 
-          # List should not be empty
-          if not fforecasts:
-              raise Exception(f"Empty commit")
+      #     # List should not be empty
+      #     if not fforecasts:
+      #         raise Exception(f"Empty commit")
 
-          # prepare the output data collection
-          out_data = {}    
-          out_data['team'] = os.path.basename(os.path.split(fforecasts[0])[0]).split('_')[0]
-          out_data['models'] = []
+      #     # prepare the output data collection
+      #     out_data = {}    
+      #     out_data['team'] = os.path.basename(os.path.split(fforecasts[0])[0]).split('_')[0]
+      #     out_data['models'] = []
 
 
-          for fforecast in fforecasts :
+      #     for fforecast in fforecasts :
 
-              #get the model name from path
-              model = tuple(os.path.basename(os.path.split(fforecast)[0]).split('_'))[1]
+      #         #get the model name from path
+      #         model = tuple(os.path.basename(os.path.split(fforecast)[0]).split('_'))[1]
 
-              model_entry = next((item for item in out_data['models'] if item["model"] == model), None)
-              if model_entry is None:
-                  out_data['models'].append({"model" : model, "changes": [fforecast]})
-              else:
-                  model_entry["changes"].append(fforecast)
+      #         model_entry = next((item for item in out_data['models'] if item["model"] == model), None)
+      #         if model_entry is None:
+      #             out_data['models'].append({"model" : model, "changes": [fforecast]})
+      #         else:
+      #             model_entry["changes"].append(fforecast)
               
 
-          out_data_s = json.dumps(out_data)
-          print(f'::set-output name=output_data::{out_data_s}')
+      #     out_data_s = json.dumps(out_data)
+      #     print(f'::set-output name=output_data::{out_data_s}')
           
-        shell: python  
+      #   shell: python  
 
   # -------------------------------------------
   # SUCCESS
@@ -141,16 +144,16 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: "${{ github.event.pull_request.head.sha }}"
           
-      # Checkout the python tools repo
-      # used to authenticate and validate the PR
-      # -------------------------------------------      
-      - name: checkout python tools repo
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          repository: 'Testing-Forecast-Actions/Testing-Tools'
-          ref: 'main'
-          path: tools
+      # # Checkout the python tools repo
+      # # used to authenticate and validate the PR
+      # # -------------------------------------------      
+      # - name: checkout python tools repo
+      #   uses: actions/checkout@v3
+      #   with:
+      #     token: ${{ secrets.GITHUB_TOKEN }}
+      #     repository: 'Testing-Forecast-Actions/Testing-Tools'
+      #     ref: 'main'
+      #     path: tools
           
       # Approve pull request 
       # ---------------------------
@@ -180,17 +183,31 @@ jobs:
           GH_TOKEN: ${{ secrets.WF_PR_PAT }}
 
 
+
+      - name: Save changes to artifact
+        env:
+          changed_files: ${{ needs.validate_request.outputs.changed_files }}
+        run: |
+          echo "{ \"pr-changes\" : \"$changed_files\" }" > pr_changes.json
+        
+      - name: Upload changes
+        uses: actions/upload-artifact@v2
+        with:
+          name: pr_changes
+          path: ./pr_changes.json
+
+
       #TEMP REMOVE 
 
-      # Store changes 
-      # -------------------------
-      - name: Store Changes 
-        if: ${{ steps.merge_pr.outputs.status == 'true' }}
-        env:
-          data: ${{ needs.validate_request.outputs.output_data }}
-        run: |
-          echo ">>> Store changes to json"
-          python ./tools/.github/scripts/utils/store_changes.py
+      # # Store changes 
+      # # -------------------------
+      # - name: Store Changes 
+      #   if: ${{ steps.merge_pr.outputs.status == 'true' }}
+      #   env:
+      #     data: ${{ needs.validate_request.outputs.output_data }}
+      #   run: |
+      #     echo ">>> Store changes to json"
+      #     python ./tools/.github/scripts/utils/store_changes.py
 
       # # Activate client view 
       # # ---------------------------
@@ -236,6 +253,8 @@ jobs:
           echo ">>> SrcPath: $GITHUB_WORKSPACE"
           echo ">>> Pull request number: ${{ github.event.pull_request.number }}"
           echo ">>> Git hub actor: ${{ github.actor }}"
+          echo ">>> Authenticate Error Message ${{ needs.validate_request.outputs.authenticate_error_msg  }}"
+          echo ">>> Validate Error Message ${{  needs.validate_request.outputs.validate_error_msg }}"
 
 
       # Inform the user about what went wrong
@@ -243,5 +262,5 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            Something went wrong. PR is rejected
+            An error occurred. Validation: ${{  needs.validate_request.outputs.validate_error_msg }}. Authentication: ${{  needs.validate_request.outputs.authenticate_error_msg }}
           pr_number: ${{ github.event.pull_request.number }}
