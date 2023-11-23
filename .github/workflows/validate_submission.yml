@@ -1,5 +1,5 @@
 # merge submission on the main branch after a pullrequest approval
-name: Validate Submission
+name: ValidateSubmission
 on: 
   pull_request_target:
     branches: [ main ]
