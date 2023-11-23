@@ -3,7 +3,8 @@
         {
             "model": "AutoArima",
             "changes": [
-                "previsioni/ISI_AutoArima/2017_51.csv"
+                "previsioni/ISI_AutoArima/2017_51.csv",
+                "previsioni/ISI_AutoArima/2017_50.csv"
             ]
         }
     ]
