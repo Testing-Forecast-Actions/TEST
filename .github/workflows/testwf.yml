@@ -15,4 +15,4 @@ jobs:
      - name: pippo
        run: |
          echo ">>> Repo: ${{ github.repository }}"
-         echo ">>> Owner: ${{ github.owner }}"
+         echo ">>> Owner: ${{ github.repository_owner }}"
