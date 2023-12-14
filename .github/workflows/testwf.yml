@@ -16,4 +16,4 @@ jobs:
     steps:
      - name: change the var value
        run: |
-         echo "Var value is ${{ test_job.env.run_import }} 
+         echo "Var value is $run_import or ${{ run_import }} 
