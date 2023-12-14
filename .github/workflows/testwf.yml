@@ -1,13 +1,13 @@
 name: Test
 on:
-  # scheduled submission every Wednesday at 1.30 a.m. 
-  # schedule:
-  #   - cron: '30 5 * * 3'  
-
+  schedule:
+    - cron: '50 22 * * 1,5'
   workflow_dispatch:
-
-# env:
-#   run_import: 'go'
+     inputs:
+       myInput:
+         description: 'User Input:'
+         required: true
+         default: "Hello World"
   
 jobs:
   test_job:
@@ -16,11 +16,17 @@ jobs:
       run_import: 'vai'
     
     steps:
-     - name: dump var value
-       run: echo "Var value is ${{ jobs.test_job.run_import }}"
-       
-     # - name: change the var value
-     #   run: echo "$jobs.test_job.run_import = 'no go'" >> $GITHUB_ENV
+      # Checkout the python tools repo
+      # -------------------------------------------      
+      - name: checkout python tools repo
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: '/Testing-Forecast-Action/Testing-Tools/'
+          ref: 'main'
+          path: './tools/'
 
-     # - name: dump var value after change
-     #   run: echo "Var value is ${{ jobs.test_job.run_import }}"
+      - name: change the var value
+        run: |
+          echo "$jobs.test_job.run_import = 'no go'" >> $GITHUB_ENV
+          INPUT_STORE=${{ github.event.inputs.myInput }} python ./tools/code/test_code.py
