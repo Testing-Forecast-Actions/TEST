@@ -18,7 +18,7 @@ jobs:
        run: echo "Var value is $run_import"
        
      - name: change the var value
-       run: echo "run_import = 'no go'"
+       run: echo "run_import = 'no go'" >> $GITHUB_ENV
 
      - name: dump var value after change
        run: echo "Var value is $run_import"
