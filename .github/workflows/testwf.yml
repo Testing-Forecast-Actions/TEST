@@ -6,19 +6,21 @@ on:
 
   workflow_dispatch:
 
+env:
+  run_import: 'go'
   
 jobs:
   test_job:
     runs-on: ubuntu-latest
-    env:
-      run_import: 'go'
+    # env:
+    #   run_import: 'go'
     
     steps:
      - name: dump var value
-       run: echo "Var value is $run_import"
+       run: echo "Var value is ${{ env.run_import }}"
        
      - name: change the var value
-       run: ${{ $run_import = 'no go'}}
+       run: ${{ env.run_import = 'no go'}}
 
      - name: dump var value after change
-       run: echo "Var value is $run_import"
+       run: echo "Var value is ${{ env.run_import }}"
