@@ -8,11 +8,12 @@ on:
 
   
 jobs:
-  scheduled-submit:
+  test_job:
     runs-on: ubuntu-latest
+    env:
+      run_import: 'go'
     
     steps:
-     - name: pippo
+     - name: change the var value
        run: |
-         echo ">>> Repo: ${{ github.repository }}"
-         echo ">>> Owner: ${{ github.repository_owner }}"
+         echo "Var value is ${{ test_job.env.run_import }} 
