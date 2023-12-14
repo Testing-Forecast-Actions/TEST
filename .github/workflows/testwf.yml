@@ -6,21 +6,21 @@ on:
 
   workflow_dispatch:
 
-env:
-  run_import: 'go'
+# env:
+#   run_import: 'go'
   
 jobs:
   test_job:
     runs-on: ubuntu-latest
-    # env:
-    #   run_import: 'go'
+    env:
+      run_import: 'vai'
     
     steps:
      - name: dump var value
-       run: echo "Var value is ${{ env.run_import }}"
+       run: echo "Var value is ${{ jobs.test_job.run_import }}"
        
-     - name: change the var value
-       run: echo "$env.run_import = 'no go'" >> $GITHUB_ENV
+     # - name: change the var value
+     #   run: echo "$jobs.test_job.run_import = 'no go'" >> $GITHUB_ENV
 
-     - name: dump var value after change
-       run: echo "Var value is ${{ env.run_import }}"
+     # - name: dump var value after change
+     #   run: echo "Var value is ${{ jobs.test_job.run_import }}"
