@@ -15,4 +15,4 @@ jobs:
     
     steps:
      - name: change the var value
-       run: echo "Var value is $run_import or ${{ run_import }}"
+       run: echo "Var value is $run_import"
