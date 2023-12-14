@@ -22,5 +22,5 @@ jobs:
      - name: change the var value
        run: echo "$env.run_import = 'no go'" >> $GITHUB_ENV
 
-     # - name: dump var value after change
-     #   run: echo "Var value is ${{ env.run_import }}"
+     - name: dump var value after change
+       run: echo "Var value is ${{ env.run_import }}"
