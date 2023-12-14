@@ -18,7 +18,7 @@ jobs:
        run: echo "Var value is $run_import"
        
      - name: change the var value
-       run: ${{ run_import = 'no go'}}
+       run: ${{ $run_import = 'no go'}}
 
      - name: dump var value after change
        run: echo "Var value is $run_import"
