@@ -14,5 +14,11 @@ jobs:
       run_import: 'go'
     
     steps:
+     - name: dump var value
+       run: echo "Var value is $run_import"
+       
      - name: change the var value
+       run: echo "run_import = 'no go'"
+
+     - name: dump var value after change
        run: echo "Var value is $run_import"
