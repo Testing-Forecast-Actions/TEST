@@ -29,4 +29,5 @@ jobs:
       - name: change the var value
         run: |
           echo "$jobs.test_job.run_import = 'no go'" >> $GITHUB_ENV
-          INPUT_STORE=${{ github.event_name == 'workflow_dispatch' }} python ./tools/code/test_code.py
+          INPUT_STORE=${{ github.event_name == 'pull_request' }} python ./tools/code/test_code.py
+          # INPUT_STORE=${{ github.event_name == 'workflow_dispatch' }} python ./tools/code/test_code.py
