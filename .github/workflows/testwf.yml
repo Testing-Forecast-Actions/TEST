@@ -1,7 +1,9 @@
 name: Test
 on:
   schedule:
-    - cron: '50 22 * * 1,5'
+    - cron: '10 16 * * 1'
+    - cron: '10 16 * * 5'
+
   workflow_dispatch:
      inputs:
        myInput:
@@ -30,4 +32,4 @@ jobs:
         run: |
           echo "$jobs.test_job.run_import = 'no go'" >> $GITHUB_ENV
           # INPUT_STORE=${{ github.event_name == 'pull_request' }} python ./tools/code/test_code.py
-          INPUT_STORE=${{ github.event_name == 'workflow_dispatch' }} python ./tools/code/test_code.py
+          INPUT_STORE=${{ github.event.schedule != '10 16 * * 1' }} python ./tools/code/test_code.py
