@@ -54,3 +54,7 @@ jobs:
         run: |
           # INPUT_STORE=${{ github.event_name == 'pull_request' }} python ./tools/code/test_code.py
           INPUT_STORE=${{ github.event.schedule != '10 16 * * 1' }} python ./tools/code/test_code.py
+
+      - name: run check
+        run: |
+          python ./emh-tools/code/truth_storage_utils.py --reference_date 2023-12-08
