@@ -1,11 +1,12 @@
 # merge submission on the main branch after a pullrequest approval
 name: ValidateSubmission
 on: 
-  pull_request_target:
-    branches: [ main ]
-    paths:
-      - 'previsioni/**'
-      - '!**README**'
+  workflow_dispatch:
+  # pull_request_target:
+  #   branches: [ main ]
+  #   paths:
+  #     - 'previsioni/**'
+  #     - '!**README**'
       
     
 jobs:
