@@ -6,11 +6,11 @@
         "name": "Paolo Milano",
         "email": "paolo.milano@isi.it"
     },
-    "repository_url": "https://github.com/european-modelling-hubs/flu-forecast-hub",
+    "repository_url": "https://github.com/Testing-Forecast-Actions/TEST",
     "file_format": ["csv"],
     "hub_models": [{
-        "team_abbr": "ECDC",
-        "model_abbr": "TBD",
+        "team_abbr": "ISI",
+        "model_abbr": "TEST",
         "model_type": "ensemble"
     }],
     "timezone": "Europe/Stockholm"
