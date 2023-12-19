@@ -3,5 +3,10 @@
         "changes": [
             "target-data/FluID/latest-ILI_incidence.yml"
         ]
+    },
+    "ILI incidence": {
+        "changes": [
+            "target-data/FluID/latest-ILI_incidence.yml"
+        ]
     }
 }
