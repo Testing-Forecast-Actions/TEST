@@ -1,0 +1,30 @@
+name: Custom Pushed Taregets
+
+on: 
+  push:
+    branches: [main]
+    paths:
+      - 'target-data/FluID/*'
+      - 'target-data/Respivirnet/*'
+      - '!**README**'
+
+jobs:
+  custom-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+           fetch-depth: 0
+      
+      - name: Get changes
+        id: changed-files
+        # run: git diff --name-only ${{ github.event.before }} ${{ github.event.after }}
+        run: echo "changed_files=$(git diff --name-only ${{ github.event.before }}
+
+
+      - name: List changed files
+        run: |
+          for file in ${{ steps.changed-files.outputs.changed_files }}; do
+              echo "$file was changed"
+          done
