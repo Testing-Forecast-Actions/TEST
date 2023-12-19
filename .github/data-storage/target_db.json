@@ -1,1 +1,7 @@
-{}
+{
+    "ILI_incidence": {
+        "changes": [
+            "target-data/FluID/latest-ILI_incidence.yml"
+        ]
+    }
+}
