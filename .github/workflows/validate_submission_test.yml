@@ -64,7 +64,8 @@ jobs:
           v <- hubValidations::validate_pr(
               gh_repo = Sys.getenv("GITHUB_REPOSITORY"),
               pr_number = Sys.getenv("PR_NUMBER"),
-              skip_submit_window_check = FALSE
+              skip_submit_window_check = FALSE,
+              allow_submit_window_mods = TRUE
           )
           hubValidations::check_for_errors(v, verbose = TRUE)
         shell: Rscript {0}
