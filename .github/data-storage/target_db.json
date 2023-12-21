@@ -8,5 +8,10 @@
         "changes": [
             "target-data/FluID/latest-ILI_incidence.yml"
         ]
+    },
+    "Readme": {
+        "changes": [
+            "target-data/FluID/Readme.md"
+        ]
     }
 }
